@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-var serviceName = "Robot";
+var serviceName = "RobotMonitor";
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -16,13 +16,15 @@ builder.Services.AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService(serviceName))
     .WithTracing(tracing => tracing
             .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation()
-            .AddConsoleExporter())
+            .AddHttpClientInstrumentation();
 
-    .WithMetrics(metrics => metrics
-            .AddAspNetCoreInstrumentation()
-            .AddConsoleExporter()
-    );
+    //.WithMetrics(metrics => metrics
+    //        .AddAspNetCoreInstrumentation()
+    //        .AddConsoleExporter()
+    //);
+
+builder.AddServiceDefaults();
+
 
 var app = builder.Build();
 
