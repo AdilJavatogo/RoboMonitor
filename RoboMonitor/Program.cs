@@ -1,27 +1,41 @@
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-var serviceName = "RobotMonitor";
+//var serviceName = "RobotMonitor";
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddOpenTelemetry()
-    .ConfigureResource(resource => resource.AddService(serviceName))
-    .WithTracing(tracing => tracing
-            .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation();
+//builder.Services.AddOpenTelemetry()
+//    .ConfigureResource(resource => resource
+//        .AddService(serviceName: builder.Environment.ApplicationName))
 
-    //.WithMetrics(metrics => metrics
-    //        .AddAspNetCoreInstrumentation()
-    //        .AddConsoleExporter()
-    //);
+//    .WithTracing(tracing =>
+//            {
+//                tracing
+//                .AddAspNetCoreInstrumentation()
+//                .AddHttpClientInstrumentation()
+//                .AddSqlClientInstrumentation();
+
+//            })
+
+//    .WithMetrics(metrics =>
+//           {
+//               metrics
+//               .AddAspNetCoreInstrumentation()
+//               .AddHttpClientInstrumentation()
+//               .AddRuntimeInstrumentation();
+//               //.AddPrometheusExporter();
+
+//           });
+
 
 builder.AddServiceDefaults();
 
@@ -41,5 +55,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapPrometheusScrapingEndpoint();
 
 app.Run();

@@ -1,0 +1,8 @@
+﻿apiVersion: 1
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    # BRUG DETTE NAVN (Det matcher container-navnet i AppHost)
+    url: http://prometheus:9090 
+    isDefault: true

@@ -3,5 +3,6 @@
 
 scrape_configs:
   - job_name: 'RobotMonitor'
+    metrics_path: '/metrics' # Sørg for at denne sti er rigtig
     static_configs:
       - targets: ['host.docker.internal:5280'] # Erstat med dit API's port (se launchSettings.json)

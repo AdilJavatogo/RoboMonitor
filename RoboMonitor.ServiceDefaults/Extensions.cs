@@ -59,7 +59,8 @@ namespace Microsoft.Extensions.Hosting
                     metrics.AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
                         .AddRuntimeInstrumentation()
-                        .AddPrometheusExporter();
+                        .AddPrometheusExporter()
+                        .AddMeter("RoboMonitor.Weather");
                 })
                 .WithTracing(tracing =>
                 {
@@ -123,6 +124,8 @@ namespace Microsoft.Extensions.Hosting
                     Predicate = r => r.Tags.Contains("live")
                 });
             }
+
+            app.MapPrometheusScrapingEndpoint();
 
             return app;
         }
