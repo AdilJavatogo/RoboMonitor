@@ -4,9 +4,13 @@
     {
         public int RobotId { get; set; }
 
+        public string Hospital { get; set; }
+
+        public string Department { get; set; }
+
         public int BatteryLevel { get; set; } // Batteriniveau i procent
 
-        public double Distance { get; set; } // Afstand i meter
+        public int Distance { get; set; } // Afstand i meter
         // med og uden seng
         // beregning til "Vaskning" og beregning til "Levering"
 

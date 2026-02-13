@@ -18,34 +18,40 @@ namespace RoboMonitor.Controllers
                 new Robot
                 {
                     RobotId = 1,
+                    Hospital = "OUH",
+                    Department = "Akut Modtagelsen",
                     BatteryLevel = 85,
                     RobotStatus = "Online",
                     RobotState = "Moving",
                     RobotTask = "Vaskning",      
                     SensorStatus = "OK",         
-                    Distance = 125.5,            
+                    Distance = 125,            
                     CPUTemperature = 45       
                 },
                 new Robot
                 {
                     RobotId = 2,
+                    Hospital = "Rigshospitalet",
+                    Department = "Kardiologisk",
                     BatteryLevel = 42,
                     RobotStatus = "Oplader",
                     RobotState = "Charging",
                     RobotTask = "Ingen",        
                     SensorStatus = "Warning",    
-                    Distance = 0.0,              
+                    Distance = 0,              
                     CPUTemperature = 38        
                 },
                 new Robot
                 {
                     RobotId = 3,
+                    Hospital = "Herlev Hospital",
+                    Department = "Onkologisk",
                     BatteryLevel = 12,
                     RobotStatus = "Offline",
                     RobotState = "Error",
                     RobotTask = "Levering",      
                     SensorStatus = "Error",      
-                    Distance = 1050.2,           
+                    Distance = 1050,           
                     CPUTemperature = 65        
                 }
             };
@@ -62,7 +68,9 @@ namespace RoboMonitor.Controllers
                     robot.BatteryLevel,
                     new TagList {
                         { "robot_id", robot.RobotId },
-                        { "status_text", robot.RobotStatus }, // Vi sender status med som tekst-label
+                        { "hospital", robot.Hospital },    
+                        { "department", robot.Department },
+                        { "status_text", robot.RobotStatus }, 
                         { "state", robot.RobotState },
                         { "task", robot.RobotTask},
                         { "sensor", robot.SensorStatus },
@@ -140,7 +148,7 @@ namespace RoboMonitor.Controllers
                     case "Moving":
                         // Når den kører: Bruger strøm, øger distance, status er Grøn
                         robot.BatteryLevel = Math.Clamp(robot.BatteryLevel - rnd.Next(1, 5), 0, 100);
-                        robot.Distance += Math.Round(rnd.NextDouble() * 10.0, 1); // Kører 0-10 meter
+                        robot.Distance += (int)Math.Round(rnd.NextDouble() * 10.0, 1); // Kører 0-10 meter
                         robot.RobotStatus = "Online";
                         robot.SensorStatus = "OK";
                         robot.RobotTask = "Vaskning";
@@ -184,7 +192,7 @@ namespace RoboMonitor.Controllers
                 if (robot.BatteryLevel <= 0)
                 {
                     robot.RobotState = "Error";
-                    robot.RobotStatus = "Rød";
+                    robot.RobotStatus = "Offline";
                     robot.RobotTask = "Ingen";
                 }
             }
@@ -202,7 +210,7 @@ namespace RoboMonitor.Controllers
             {
                 RobotId = id,
                 BatteryLevel = 100,
-                RobotStatus = "Grøn",
+                RobotStatus = "Online",
                 RobotState = "Idle"
             });
 
