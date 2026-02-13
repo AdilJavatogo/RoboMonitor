@@ -60,7 +60,8 @@ namespace Microsoft.Extensions.Hosting
                         .AddHttpClientInstrumentation()
                         .AddRuntimeInstrumentation()
                         .AddPrometheusExporter()
-                        .AddMeter("RoboMonitor.Weather");
+                        .AddMeter("RoboMonitor.Weather")
+                        .AddMeter("RoboMonitor.Robots");
                 })
                 .WithTracing(tracing =>
                 {
