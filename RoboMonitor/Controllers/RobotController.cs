@@ -24,7 +24,7 @@ namespace RoboMonitor.Controllers
                     RobotTask = "Vaskning",      
                     SensorStatus = "OK",         
                     Distance = 125.5,            
-                    CPUTemperature = 45.2        
+                    CPUTemperature = 45       
                 },
                 new Robot
                 {
@@ -35,7 +35,7 @@ namespace RoboMonitor.Controllers
                     RobotTask = "Ingen",        
                     SensorStatus = "Warning",    
                     Distance = 0.0,              
-                    CPUTemperature = 38.1        
+                    CPUTemperature = 38        
                 },
                 new Robot
                 {
@@ -46,7 +46,7 @@ namespace RoboMonitor.Controllers
                     RobotTask = "Levering",      
                     SensorStatus = "Error",      
                     Distance = 1050.2,           
-                    CPUTemperature = 65.0        
+                    CPUTemperature = 65        
                 }
             };
 
@@ -125,7 +125,7 @@ namespace RoboMonitor.Controllers
             {
                 // 1. Simuler CPU Temperatur (svinger lidt op og ned med +/- 2 grader)
                 double tempChange = rnd.NextDouble() * 4 - 2;
-                robot.CPUTemperature = Math.Clamp(robot.CPUTemperature + tempChange, 30.0, 90.0);
+                robot.CPUTemperature = (int)Math.Clamp(robot.CPUTemperature + tempChange, 30.0, 90.0);
 
                 // 2. Chance for at skifte tilstand (f.eks. 20% chance hver gang man trykker)
                 if (rnd.Next(0, 10) > 7)
@@ -143,6 +143,7 @@ namespace RoboMonitor.Controllers
                         robot.Distance += Math.Round(rnd.NextDouble() * 10.0, 1); // Kører 0-10 meter
                         robot.RobotStatus = "Online";
                         robot.SensorStatus = "OK";
+                        robot.RobotTask = "Vaskning";
 
                         // Tildel en opgave hvis den ikke har en
                         if (robot.RobotTask == "Ingen" || robot.RobotTask == null)
@@ -164,7 +165,7 @@ namespace RoboMonitor.Controllers
                         // Ved fejl: Status er Rød
                         robot.RobotStatus = "Offline";
                         robot.SensorStatus = "Error";
-                        robot.RobotTask = "FEJL - Venter på tekniker";
+                        robot.RobotTask = "Ingen";
                         break;
 
                     case "Idle":
@@ -172,7 +173,7 @@ namespace RoboMonitor.Controllers
                         // Standby: Bruger lidt strøm
                         robot.BatteryLevel = Math.Clamp(robot.BatteryLevel - 1, 0, 100);
                         robot.RobotStatus = "Online";
-                        robot.RobotTask = "Ingen";
+                        robot.RobotTask = "Levering";
 
                         // Lille chance for sensor warning i idle
                         robot.SensorStatus = rnd.Next(0, 100) > 90 ? "Warning" : "OK";
@@ -184,7 +185,7 @@ namespace RoboMonitor.Controllers
                 {
                     robot.RobotState = "Error";
                     robot.RobotStatus = "Rød";
-                    robot.RobotTask = "BATTERI KRITISK";
+                    robot.RobotTask = "Ingen";
                 }
             }
 

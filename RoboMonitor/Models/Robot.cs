@@ -4,8 +4,6 @@
     {
         public int RobotId { get; set; }
 
-        //public String Department { get; set; }
-
         public int BatteryLevel { get; set; } // Batteriniveau i procent
 
         public double Distance { get; set; } // Afstand i meter
@@ -14,7 +12,7 @@
 
         public string SensorStatus { get; set; } // Sensorstatus (OK, Warning, Error)
 
-        public double CPUTemperature { get; set; } // CPU-temperatur i grader Celsius
+        public int CPUTemperature { get; set; } // CPU-temperatur i grader Celsius
 
         public string RobotState { get; set; } // Robottilstand (Idle, Moving, Charging, Error)
 
