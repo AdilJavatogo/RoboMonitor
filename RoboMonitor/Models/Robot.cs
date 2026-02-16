@@ -24,7 +24,7 @@
 
         public string RobotStatus { get; set; } // Robotstatus (Grøn = Kører, Gul = Oplader, Rød = Fejl/Offline)
         
-        public int Ladetid { get; set; } // Ladetid i minutter
+        public int ChargingTime { get; set; } // Ladetid i minutter
 
         public bool Lift { get; set; }
 
