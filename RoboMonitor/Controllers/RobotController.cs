@@ -61,7 +61,7 @@ namespace RoboMonitor.Controllers
         static RobotController()
         {
             // Måling: Batteriniveau
-            _robotMeter.CreateObservableGauge("robot_battery_level", () =>
+            _robotMeter.CreateObservableGauge("robotfleet", () =>
             {
                 // Vi returnerer en måling for hver robot i listen med dens ID som label
                 return _robots.Select(robot => new Measurement<int>(
