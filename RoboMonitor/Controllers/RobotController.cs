@@ -26,7 +26,11 @@ namespace RoboMonitor.Controllers
                     RobotTask = "Vaskning",      
                     SensorStatus = "OK",         
                     Distance = 125,            
-                    CPUTemperature = 45       
+                    CPUTemperature = 45,
+                    Lift = true,
+                    EStop = false,
+                    ChargingTime = 12,
+                    BreakCount = 120
                 },
                 new Robot
                 {
@@ -39,7 +43,11 @@ namespace RoboMonitor.Controllers
                     RobotTask = "Ingen",        
                     SensorStatus = "Warning",    
                     Distance = 0,              
-                    CPUTemperature = 38        
+                    CPUTemperature = 38,
+                    Lift = false,
+                    EStop = true,
+                    ChargingTime = 30,
+                    BreakCount = 50
                 },
                 new Robot
                 {
@@ -52,7 +60,11 @@ namespace RoboMonitor.Controllers
                     RobotTask = "Levering",      
                     SensorStatus = "Error",      
                     Distance = 1050,           
-                    CPUTemperature = 65        
+                    CPUTemperature = 65,
+                    Lift = true,
+                    EStop = false,
+                    ChargingTime = 15,
+                    BreakCount = 200
                 }
             };
 
@@ -74,7 +86,11 @@ namespace RoboMonitor.Controllers
                         { "state", robot.RobotState },
                         { "task", robot.RobotTask},
                         { "sensor", robot.SensorStatus },
-                        { "temperature", robot.CPUTemperature }
+                        { "temperature", robot.CPUTemperature },
+                        { "lift", robot.Lift },
+                        { "estop", robot.EStop },
+                        { "charging_time", robot.ChargingTime },
+                        { "break_count", robot.BreakCount }
                     }));
             });
 
