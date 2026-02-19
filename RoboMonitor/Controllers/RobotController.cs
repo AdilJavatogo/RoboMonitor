@@ -99,6 +99,23 @@ namespace RoboMonitor.Controllers
                     EStop = false,
                     ChargingTime = 15,
                     BreakCount = 200
+                },
+                 new Robot
+                {
+                    RobotId = 6,
+                    Hospital = "Herlev Hospital",
+                    Department = "Onkologisk",
+                    BatteryLevel = 12,
+                    RobotStatus = "Offline",
+                    RobotState = "Error",
+                    RobotTask = "Levering",
+                    SensorStatus = "Error",
+                    Distance = 1050,
+                    CPUTemperature = 65,
+                    Lift = true,
+                    EStop = false,
+                    ChargingTime = 15,
+                    BreakCount = 200
                 }
             };
 
@@ -136,6 +153,33 @@ namespace RoboMonitor.Controllers
                     new TagList { { "robot_id", robot.RobotId } }
                 ));
             });
+
+            // Måling: Tilstand (State) som tal til State Timeline
+            _robotMeter.CreateObservableGauge("robot_state_code", () =>
+            {
+                return _robots.Select(robot => new Measurement<int>(
+                    GetStateCode(robot.RobotState),
+                    new TagList { { "robot_id", robot.RobotId } }
+                ));
+            });
+
+            // Måling: Opgave (Task) som tal til State Timeline
+            _robotMeter.CreateObservableGauge("robot_task_code", () =>
+            {
+                return _robots.Select(robot => new Measurement<int>(
+                    GetTaskCode(robot.RobotTask),
+                    new TagList { { "robot_id", robot.RobotId } }
+                ));
+            });
+
+            // Måling: Sensorstatus som tal til State Timeline
+            _robotMeter.CreateObservableGauge("robot_sensor_code", () =>
+            {
+                return _robots.Select(robot => new Measurement<int>(
+                    GetSensorCode(robot.SensorStatus),
+                    new TagList { { "robot_id", robot.RobotId } }
+                ));
+            });
         }
 
         // Hjælper til at lave status om til tal til grafer
@@ -145,6 +189,35 @@ namespace RoboMonitor.Controllers
             "Oplader" => 2,  // Advarsel
             "Offline" => 3,  // Fejl
             _ => 0       // Ukendt
+        };
+
+        // Hjælper til at oversætte Robottilstand (State) til tal
+        private static int GetStateCode(string state) => state switch
+        {
+            "Moving" => 1,   // Kører aktivt
+            "Idle" => 2,     // Venter/Standby
+            "Charging" => 3, // Lader op
+            "Error" => 4,    // Fejltilstand
+            _ => 0           // Ukendt
+        };
+
+        // Hjælper til at oversætte Robotopgave (Task) til tal
+        private static int GetTaskCode(string task) => task switch
+        {
+            "Vaskning" => 1,
+            "Levering" => 2,
+            "Inspektion" => 3,
+            "Ingen" => 4,    // Ingen aktiv opgave
+            _ => 0           // Ukendt
+        };
+
+        // Hjælper til at oversætte Sensorstatus til tal
+        private static int GetSensorCode(string sensor) => sensor switch
+        {
+            "OK" => 1,       // Alt fungerer (Grøn)
+            "Warning" => 2,  // Advarsel, f.eks. snavset sensor (Gul)
+            "Error" => 3,    // Fejl, f.eks. blokeret (Rød)
+            _ => 0           // Ukendt
         };
 
         [HttpGet(Name = "GetRobots")]
