@@ -35,6 +35,23 @@ namespace RoboMonitor.Controllers
                 new Robot
                 {
                     RobotId = 2,
+                    Hospital = "OUH",
+                    Department = "Kardiologisk",
+                    BatteryLevel = 85,
+                    RobotStatus = "Online",
+                    RobotState = "Moving",
+                    RobotTask = "Vaskning",
+                    SensorStatus = "OK",
+                    Distance = 125,
+                    CPUTemperature = 45,
+                    Lift = true,
+                    EStop = false,
+                    ChargingTime = 12,
+                    BreakCount = 120
+                },
+                new Robot
+                {
+                    RobotId = 3,
                     Hospital = "Rigshospitalet",
                     Department = "Kardiologisk",
                     BatteryLevel = 42,
@@ -49,9 +66,26 @@ namespace RoboMonitor.Controllers
                     ChargingTime = 30,
                     BreakCount = 50
                 },
+                 new Robot
+                {
+                    RobotId = 4,
+                    Hospital = "Herlev Hospital",
+                    Department = "Kardiologisk",
+                    BatteryLevel = 42,
+                    RobotStatus = "Oplader",
+                    RobotState = "Charging",
+                    RobotTask = "Ingen",
+                    SensorStatus = "Warning",
+                    Distance = 0,
+                    CPUTemperature = 38,
+                    Lift = false,
+                    EStop = true,
+                    ChargingTime = 30,
+                    BreakCount = 50
+                },
                 new Robot
                 {
-                    RobotId = 3,
+                    RobotId = 5,
                     Hospital = "Herlev Hospital",
                     Department = "Onkologisk",
                     BatteryLevel = 12,
@@ -147,12 +181,29 @@ namespace RoboMonitor.Controllers
 
             foreach (var robot in _robots)
             {
-                // 1. Simuler CPU Temperatur (svinger lidt op og ned med +/- 2 grader)
+                // 1. Simuler CPU Temperatur (eksisterende logik)
                 double tempChange = rnd.NextDouble() * 4 - 2;
                 robot.CPUTemperature = (int)Math.Clamp(robot.CPUTemperature + tempChange, 30.0, 90.0);
 
-                // 2. Chance for at skifte tilstand (f.eks. 20% chance hver gang man trykker)
-                if (rnd.Next(0, 10) > 7)
+                // ---------------------------------------------------------
+                // NYT: E-Stop logik
+                // ---------------------------------------------------------
+                // 1% chance for at nogen trykker på Nødstop
+                if (rnd.Next(0, 100) == 99)
+                {
+                    robot.EStop = true;
+                    robot.RobotState = "Error"; // Nødstop tvinger robotten i fejl
+                    robot.RobotStatus = "Offline";
+                    robot.SensorStatus = "Error";
+                }
+                else if (robot.EStop)
+                {
+                    // Hvis E-Stop er aktiv, er der 20% chance for at det bliver løst (reset)
+                    if (rnd.Next(0, 100) > 80) robot.EStop = false;
+                }
+
+                // 2. Chance for at skifte tilstand (kun hvis E-Stop IKKE er aktiv)
+                if (!robot.EStop && rnd.Next(0, 10) > 7)
                 {
                     string[] states = ["Idle", "Moving", "Charging", "Error"];
                     robot.RobotState = states[rnd.Next(states.Length)];
@@ -162,15 +213,24 @@ namespace RoboMonitor.Controllers
                 switch (robot.RobotState)
                 {
                     case "Moving":
-                        // Når den kører: Bruger strøm, øger distance, status er Grøn
+                        // Eksisterende: Strøm, distance, status
                         robot.BatteryLevel = Math.Clamp(robot.BatteryLevel - rnd.Next(1, 5), 0, 100);
-                        robot.Distance += (int)Math.Round(rnd.NextDouble() * 10.0, 1); // Kører 0-10 meter
+                        robot.Distance += (int)Math.Round(rnd.NextDouble() * 10.0, 1);
                         robot.RobotStatus = "Online";
                         robot.SensorStatus = "OK";
                         robot.RobotTask = "Vaskning";
 
-                        // Tildel en opgave hvis den ikke har en
-                        if (robot.RobotTask == "Ingen" || robot.RobotTask == null)
+                        // NYT: Bremsetæller stiger når den kører (0, 1 eller 2 opbremsninger)
+                        robot.BreakCount += rnd.Next(0, 3);
+
+                        // NYT: Liften bruges ofte under kørsel (50% chance)
+                        robot.Lift = rnd.Next(0, 10) > 5;
+
+                        // NYT: Vi lader ikke når vi kører
+                        robot.ChargingTime = 0;
+
+                        // Tildel opgave
+                        if (string.IsNullOrEmpty(robot.RobotTask) || robot.RobotTask == "Ingen")
                         {
                             string[] tasks = ["Vaskning", "Levering", "Inspektion"];
                             robot.RobotTask = tasks[rnd.Next(tasks.Length)];
@@ -178,29 +238,37 @@ namespace RoboMonitor.Controllers
                         break;
 
                     case "Charging":
-                        // Når den lader: Får strøm, status er Gul
+                        // Eksisterende: Får strøm
                         robot.BatteryLevel = Math.Clamp(robot.BatteryLevel + rnd.Next(5, 15), 0, 100);
                         robot.RobotStatus = "Oplader";
-                        robot.RobotTask = "Ingen"; // Man arbejder ikke når man lader
+                        robot.RobotTask = "Ingen";
                         robot.SensorStatus = "OK";
+
+                        // NYT: Tæl ladetid op (simulerer at der går tid)
+                        robot.ChargingTime += 5;
+
+                        // NYT: Liften er nede under opladning
+                        robot.Lift = false;
                         break;
 
                     case "Error":
-                        // Ved fejl: Status er Rød
                         robot.RobotStatus = "Offline";
                         robot.SensorStatus = "Error";
                         robot.RobotTask = "Ingen";
+
+                        // NYT: Ingen ladning under fejl
+                        robot.ChargingTime = 0;
                         break;
 
                     case "Idle":
                     default:
-                        // Standby: Bruger lidt strøm
                         robot.BatteryLevel = Math.Clamp(robot.BatteryLevel - 1, 0, 100);
                         robot.RobotStatus = "Online";
                         robot.RobotTask = "Levering";
-
-                        // Lille chance for sensor warning i idle
                         robot.SensorStatus = rnd.Next(0, 100) > 90 ? "Warning" : "OK";
+
+                        // NYT: Reset ladetid hvis vi bare står stille (ikke lader)
+                        robot.ChargingTime = 0;
                         break;
                 }
 
@@ -215,6 +283,7 @@ namespace RoboMonitor.Controllers
 
             return Ok(new { message = "Simulering udført: Alle robotdata er opdateret realistisk", data = _robots });
         }
+
         // POST endpoint til at tilføje en ny robot dynamisk
         [HttpPost("add")]
         public IActionResult AddRobot(int id)

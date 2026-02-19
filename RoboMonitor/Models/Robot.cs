@@ -20,7 +20,7 @@
 
         public string RobotState { get; set; } // Robottilstand (Idle, Moving, Charging, Error)
 
-        public string RobotTask { get; set; } // Robotopgaver ("Vaskning", "Levering")
+        public string RobotTask { get; set; } // Robotopgaver ("Vaskning", "Levering", "Inspektion")
 
         public string RobotStatus { get; set; } // Robotstatus (Grøn = Kører, Gul = Oplader, Rød = Fejl/Offline)
         
