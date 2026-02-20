@@ -27,7 +27,7 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "OK",         
                     Distance = 125,            
                     CPUTemperature = 45,
-                    Lift = true,
+                    Lift = 125,
                     EStop = false,
                     ChargingTime = 12,
                     BreakCount = 120
@@ -44,7 +44,7 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "OK",
                     Distance = 125,
                     CPUTemperature = 45,
-                    Lift = true,
+                    Lift = 329,
                     EStop = false,
                     ChargingTime = 12,
                     BreakCount = 120
@@ -61,7 +61,7 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "Advarsel",    
                     Distance = 0,              
                     CPUTemperature = 38,
-                    Lift = false,
+                    Lift = 13,
                     EStop = true,
                     ChargingTime = 30,
                     BreakCount = 50
@@ -78,7 +78,7 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "Advarsel",
                     Distance = 0,
                     CPUTemperature = 38,
-                    Lift = false,
+                    Lift = 56,
                     EStop = true,
                     ChargingTime = 30,
                     BreakCount = 50
@@ -95,7 +95,7 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "Fejl",      
                     Distance = 1050,           
                     CPUTemperature = 65,
-                    Lift = true,
+                    Lift = 594,
                     EStop = false,
                     ChargingTime = 15,
                     BreakCount = 200
@@ -112,7 +112,7 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "Fejl",
                     Distance = 1050,
                     CPUTemperature = 65,
-                    Lift = true,
+                    Lift = 39,
                     EStop = false,
                     ChargingTime = 15,
                     BreakCount = 200

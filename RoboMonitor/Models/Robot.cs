@@ -26,7 +26,7 @@
         
         public int ChargingTime { get; set; } // Ladetid i minutter
 
-        public bool Lift { get; set; }
+        public int Lift { get; set; }
 
         // E stop - historisk data
         public bool EStop { get; set; }
