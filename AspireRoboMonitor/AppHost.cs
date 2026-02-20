@@ -3,7 +3,8 @@ using Aspire.Hosting;
 var builder = DistributedApplication.CreateBuilder(args);
 
 var api = builder.AddProject<Projects.RoboMonitor>("robotmonitor")
-    .WithHttpEndpoint(port: 5280, targetPort: 8080, name: "api-http");
+    //.WithHttpEndpoint(port: 5280, targetPort: 8080, name: "api-http")
+    .WithExternalHttpEndpoints();
 
 var prometheus = builder.AddContainer("prometheus", "prom/prometheus")
        .WithBindMount("./prometheus.yml", "/etc/prometheus/prometheus.yml")
