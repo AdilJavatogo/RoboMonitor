@@ -22,7 +22,7 @@ namespace RoboMonitor.Controllers
                     Department = "Akut Modtagelsen",
                     BatteryLevel = 85,
                     RobotStatus = "Online",
-                    RobotState = "Moving",
+                    RobotState = "Kører",
                     RobotTask = "Vaskning",      
                     SensorStatus = "OK",         
                     Distance = 125,            
@@ -39,7 +39,7 @@ namespace RoboMonitor.Controllers
                     Department = "Kardiologisk",
                     BatteryLevel = 85,
                     RobotStatus = "Online",
-                    RobotState = "Moving",
+                    RobotState = "Kører",
                     RobotTask = "Vaskning",
                     SensorStatus = "OK",
                     Distance = 125,
@@ -56,9 +56,9 @@ namespace RoboMonitor.Controllers
                     Department = "Kardiologisk",
                     BatteryLevel = 42,
                     RobotStatus = "Oplader",
-                    RobotState = "Charging",
+                    RobotState = "Oplader",
                     RobotTask = "Ingen",        
-                    SensorStatus = "Warning",    
+                    SensorStatus = "Advarsel",    
                     Distance = 0,              
                     CPUTemperature = 38,
                     Lift = false,
@@ -73,9 +73,9 @@ namespace RoboMonitor.Controllers
                     Department = "Kardiologisk",
                     BatteryLevel = 42,
                     RobotStatus = "Oplader",
-                    RobotState = "Charging",
+                    RobotState = "Oplader",
                     RobotTask = "Ingen",
-                    SensorStatus = "Warning",
+                    SensorStatus = "Advarsel",
                     Distance = 0,
                     CPUTemperature = 38,
                     Lift = false,
@@ -90,9 +90,9 @@ namespace RoboMonitor.Controllers
                     Department = "Onkologisk",
                     BatteryLevel = 12,
                     RobotStatus = "Offline",
-                    RobotState = "Error",
+                    RobotState = "Fejl",
                     RobotTask = "Levering",      
-                    SensorStatus = "Error",      
+                    SensorStatus = "Fejl",      
                     Distance = 1050,           
                     CPUTemperature = 65,
                     Lift = true,
@@ -107,9 +107,9 @@ namespace RoboMonitor.Controllers
                     Department = "Onkologisk",
                     BatteryLevel = 12,
                     RobotStatus = "Offline",
-                    RobotState = "Error",
+                    RobotState = "Fejl",
                     RobotTask = "Levering",
-                    SensorStatus = "Error",
+                    SensorStatus = "Fejl",
                     Distance = 1050,
                     CPUTemperature = 65,
                     Lift = true,
@@ -194,10 +194,10 @@ namespace RoboMonitor.Controllers
         // Hjælper til at oversætte Robottilstand (State) til tal
         private static int GetStateCode(string state) => state switch
         {
-            "Moving" => 1,   // Kører aktivt
-            "Idle" => 2,     // Venter/Standby
-            "Charging" => 3, // Lader op
-            "Error" => 4,    // Fejltilstand
+            "Kører" => 1,   // Kører aktivt
+            "Ledig" => 2,     // Venter/Standby
+            "Oplader" => 3, // Lader op
+            "Fejl" => 4,    // Fejltilstand
             _ => 0           // Ukendt
         };
 
@@ -215,8 +215,8 @@ namespace RoboMonitor.Controllers
         private static int GetSensorCode(string sensor) => sensor switch
         {
             "OK" => 1,       // Alt fungerer (Grøn)
-            "Warning" => 2,  // Advarsel, f.eks. snavset sensor (Gul)
-            "Error" => 3,    // Fejl, f.eks. blokeret (Rød)
+            "Advarsel" => 2,  // Advarsel, f.eks. snavset sensor (Gul)
+            "Fejl" => 3,    // Fejl, f.eks. blokeret (Rød)
             _ => 0           // Ukendt
         };
 
@@ -265,9 +265,9 @@ namespace RoboMonitor.Controllers
                 if (rnd.Next(0, 100) == 99)
                 {
                     robot.EStop = true;
-                    robot.RobotState = "Error"; // Nødstop tvinger robotten i fejl
+                    robot.RobotState = "Fejl"; // Nødstop tvinger robotten i fejl
                     robot.RobotStatus = "Offline";
-                    robot.SensorStatus = "Error";
+                    robot.SensorStatus = "Fejl";
                 }
                 else if (robot.EStop)
                 {
@@ -278,14 +278,14 @@ namespace RoboMonitor.Controllers
                 // 2. Chance for at skifte tilstand (kun hvis E-Stop IKKE er aktiv)
                 if (!robot.EStop && rnd.Next(0, 10) > 7)
                 {
-                    string[] states = ["Idle", "Moving", "Charging", "Error"];
+                    string[] states = ["Ledig", "Kører", "Oplader", "Fejl"];
                     robot.RobotState = states[rnd.Next(states.Length)];
                 }
 
                 // 3. Opdater data baseret på den tilstand, robotten er i
                 switch (robot.RobotState)
                 {
-                    case "Moving":
+                    case "Kører":
                         // Eksisterende: Strøm, distance, status
                         robot.BatteryLevel = Math.Clamp(robot.BatteryLevel - rnd.Next(1, 5), 0, 100);
                         robot.Distance += (int)Math.Round(rnd.NextDouble() * 10.0, 1);
@@ -310,7 +310,7 @@ namespace RoboMonitor.Controllers
                         }
                         break;
 
-                    case "Charging":
+                    case "Oplader":
                         // Eksisterende: Får strøm
                         robot.BatteryLevel = Math.Clamp(robot.BatteryLevel + rnd.Next(5, 15), 0, 100);
                         robot.RobotStatus = "Oplader";
@@ -324,21 +324,21 @@ namespace RoboMonitor.Controllers
                         robot.Lift = false;
                         break;
 
-                    case "Error":
+                    case "Fejl":
                         robot.RobotStatus = "Offline";
-                        robot.SensorStatus = "Error";
+                        robot.SensorStatus = "Fejl";
                         robot.RobotTask = "Ingen";
 
                         // NYT: Ingen ladning under fejl
                         robot.ChargingTime = 0;
                         break;
 
-                    case "Idle":
+                    case "Ledig":
                     default:
                         robot.BatteryLevel = Math.Clamp(robot.BatteryLevel - 1, 0, 100);
                         robot.RobotStatus = "Online";
                         robot.RobotTask = "Levering";
-                        robot.SensorStatus = rnd.Next(0, 100) > 90 ? "Warning" : "OK";
+                        robot.SensorStatus = rnd.Next(0, 100) > 90 ? "Advarsel" : "OK";
 
                         // NYT: Reset ladetid hvis vi bare står stille (ikke lader)
                         robot.ChargingTime = 0;
@@ -348,7 +348,7 @@ namespace RoboMonitor.Controllers
                 // Sikkerhedsnet: Hvis batteriet dør helt
                 if (robot.BatteryLevel <= 0)
                 {
-                    robot.RobotState = "Error";
+                    robot.RobotState = "Fejl";
                     robot.RobotStatus = "Offline";
                     robot.RobotTask = "Ingen";
                 }
@@ -369,7 +369,7 @@ namespace RoboMonitor.Controllers
                 RobotId = id,
                 BatteryLevel = 100,
                 RobotStatus = "Online",
-                RobotState = "Idle"
+                RobotState = "Ledig"
             });
 
             return Ok($"Robot {id} tilføjet! Den dukker op i Grafana om ca. 5 sekunder.");
