@@ -112,7 +112,7 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "Fejl",
                     Distance = 1050,
                     CPUTemperature = 65,
-                    Lift = 39,
+                    Lift = 457,
                     EStop = false,
                     ChargingTime = 15,
                     BreakCount = 200
@@ -180,6 +180,14 @@ namespace RoboMonitor.Controllers
                     new TagList { { "robot_id", robot.RobotId } }
                 ));
             });
+
+            //_robotMeter.CreateObservableGauge("robot_estop_code", () =>
+            //{
+            //    return _robots.Select(robot => new Measurement<int>(
+            //        GetEStopCode(robot.EStop),
+            //        new TagList { { "robot_id", robot.RobotId } }
+            //    ));
+            //});
         }
 
         // Hjælper til at lave status om til tal til grafer
@@ -220,6 +228,13 @@ namespace RoboMonitor.Controllers
             _ => 0           // Ukendt
         };
 
+        private static int GetEStopCode(string sensor) => sensor switch
+        {
+            "False" => 1,      
+            "True" => 2, 
+            _ => 0
+        };
+
         [HttpGet(Name = "GetRobots")]
         public IEnumerable<Robot> Get()
         {
@@ -254,28 +269,26 @@ namespace RoboMonitor.Controllers
 
             foreach (var robot in _robots)
             {
-                // 1. Simuler CPU Temperatur (eksisterende logik)
+                // 1. Simuler CPU Temperatur
                 double tempChange = rnd.NextDouble() * 4 - 2;
                 robot.CPUTemperature = (int)Math.Clamp(robot.CPUTemperature + tempChange, 30.0, 90.0);
 
                 // ---------------------------------------------------------
-                // NYT: E-Stop logik
+                // E-Stop logik
                 // ---------------------------------------------------------
-                // 1% chance for at nogen trykker på Nødstop
                 if (rnd.Next(0, 100) == 99)
                 {
                     robot.EStop = true;
-                    robot.RobotState = "Fejl"; // Nødstop tvinger robotten i fejl
+                    robot.RobotState = "Fejl";
                     robot.RobotStatus = "Offline";
                     robot.SensorStatus = "Fejl";
                 }
                 else if (robot.EStop)
                 {
-                    // Hvis E-Stop er aktiv, er der 20% chance for at det bliver løst (reset)
                     if (rnd.Next(0, 100) > 80) robot.EStop = false;
                 }
 
-                // 2. Chance for at skifte tilstand (kun hvis E-Stop IKKE er aktiv)
+                // 2. Chance for at skifte tilstand
                 if (!robot.EStop && rnd.Next(0, 10) > 7)
                 {
                     string[] states = ["Ledig", "Kører", "Oplader", "Fejl"];
@@ -286,23 +299,21 @@ namespace RoboMonitor.Controllers
                 switch (robot.RobotState)
                 {
                     case "Kører":
-                        // Eksisterende: Strøm, distance, status
                         robot.BatteryLevel = Math.Clamp(robot.BatteryLevel - rnd.Next(1, 5), 0, 100);
                         robot.Distance += (int)Math.Round(rnd.NextDouble() * 10.0, 1);
                         robot.RobotStatus = "Online";
                         robot.SensorStatus = "OK";
                         robot.RobotTask = "Vaskning";
 
-                        // NYT: Bremsetæller stiger når den kører (0, 1 eller 2 opbremsninger)
+                        // Bremsetæller stiger
                         robot.BreakCount += rnd.Next(0, 3);
 
-                        // NYT: Liften bruges ofte under kørsel (50% chance)
-                        robot.Lift = rnd.Next(0, 10) > 5;
+                        // OPDATERET: Tæller antal løft (Tilføjer 0 eller 1 løft pr. kørsel)
+                        // Du kan justere tallene, hvis den skal løfte oftere/mere
+                        robot.Lift += rnd.Next(0, 2);
 
-                        // NYT: Vi lader ikke når vi kører
                         robot.ChargingTime = 0;
 
-                        // Tildel opgave
                         if (string.IsNullOrEmpty(robot.RobotTask) || robot.RobotTask == "Ingen")
                         {
                             string[] tasks = ["Vaskning", "Levering", "Inspektion"];
@@ -311,25 +322,19 @@ namespace RoboMonitor.Controllers
                         break;
 
                     case "Oplader":
-                        // Eksisterende: Får strøm
                         robot.BatteryLevel = Math.Clamp(robot.BatteryLevel + rnd.Next(5, 15), 0, 100);
                         robot.RobotStatus = "Oplader";
                         robot.RobotTask = "Ingen";
                         robot.SensorStatus = "OK";
-
-                        // NYT: Tæl ladetid op (simulerer at der går tid)
                         robot.ChargingTime += 5;
 
-                        // NYT: Liften er nede under opladning
-                        robot.Lift = false;
+                        // FJERNET: robot.Lift = false; (Da vi nu tæller totalen, skal den bare bevare sit tal)
                         break;
 
                     case "Fejl":
                         robot.RobotStatus = "Offline";
                         robot.SensorStatus = "Fejl";
                         robot.RobotTask = "Ingen";
-
-                        // NYT: Ingen ladning under fejl
                         robot.ChargingTime = 0;
                         break;
 
@@ -339,13 +344,10 @@ namespace RoboMonitor.Controllers
                         robot.RobotStatus = "Online";
                         robot.RobotTask = "Levering";
                         robot.SensorStatus = rnd.Next(0, 100) > 90 ? "Advarsel" : "OK";
-
-                        // NYT: Reset ladetid hvis vi bare står stille (ikke lader)
                         robot.ChargingTime = 0;
                         break;
                 }
 
-                // Sikkerhedsnet: Hvis batteriet dør helt
                 if (robot.BatteryLevel <= 0)
                 {
                     robot.RobotState = "Fejl";
