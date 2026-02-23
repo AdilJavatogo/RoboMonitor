@@ -91,7 +91,7 @@ namespace RoboMonitor.Controllers
                     BatteryLevel = 12,
                     RobotStatus = "Offline",
                     RobotState = "Fejl",
-                    RobotTask = "Levering",      
+                    RobotTask = "Levering", // ændre det til noget andet, måske "Ren"     
                     SensorStatus = "Fejl",      
                     Distance = 1050,           
                     CPUTemperature = 65,
@@ -119,8 +119,7 @@ namespace RoboMonitor.Controllers
                 }
             };
 
-        // 3. Vi opretter ObservableGauges
-        // De kører automatisk hver gang Prometheus "skraber" data (hvert 5. sek)
+        // 3. I den statiske constructor sætter vi vores målinger op, så de automatisk opdateres, når data i listen ændres
         static RobotController()
         {
             // Måling: Batteriniveau

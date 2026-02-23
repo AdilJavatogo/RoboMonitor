@@ -8,31 +8,65 @@
 
         public string Department { get; set; }
 
-        public int BatteryLevel { get; set; } // Batteriniveau i procent
+        public int BatteryLevel { get; set; }
 
-        public int Distance { get; set; } // Afstand i meter
+        public int Distance { get; set; }
         // med og uden seng
         // beregning til "Vaskning" og beregning til "Levering"
 
-        public string SensorStatus { get; set; } // Sensorstatus (OK, Warning, Error)
+        public string SensorStatus { get; set; }
 
-        public int CPUTemperature { get; set; } // CPU-temperatur i grader Celsius
+        public int CPUTemperature { get; set; }
 
-        public string RobotState { get; set; } // Robottilstand (Idle, Moving, Charging, Error)
+        public string RobotState { get; set; }
 
-        public string RobotTask { get; set; } // Robotopgaver ("Vaskning", "Levering", "Inspektion")
+        public string RobotTask { get; set; }
 
-        public string RobotStatus { get; set; } // Robotstatus (Grøn = Kører, Gul = Oplader, Rød = Fejl/Offline)
-        
-        public int ChargingTime { get; set; } // Ladetid i minutter
+        public string RobotStatus { get; set; }
+
+        public int ChargingTime { get; set; }
 
         public int Lift { get; set; }
 
-        // E stop - historisk data
         public bool EStop { get; set; }
 
-        // bremse aktivering, 500 bremseaktiveringer
         public int BreakCount { get; set; }
 
     }
+
+    public enum RobotTask
+    {
+        Vaskning,
+        Levering,
+        Inspektion
+    }
+
+    public enum RobotState{
+        Ledig,
+        Kører,
+        Oplader,
+        Fejl // skal måske være forskellig
+    }
+
+    public enum RobotStatus
+    {
+        Online,
+        Oplader,
+        Offline
+    }
+
+    public enum SensorStatus
+    {
+        OK,
+        Advarsel,
+        Fejl // skal måske være forskellig
+    }
+
+    public enum EStopStatus
+    {
+        Aktiveret,
+        Deaktiveret
+    }
+
+
 }
