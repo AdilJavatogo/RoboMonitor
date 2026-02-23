@@ -181,32 +181,33 @@ namespace RoboMonitor.Controllers
                 ));
             });
 
-            //_robotMeter.CreateObservableGauge("robot_estop_code", () =>
-            //{
-            //    return _robots.Select(robot => new Measurement<int>(
-            //        GetEStopCode(robot.EStop),
-            //        new TagList { { "robot_id", robot.RobotId } }
-            //    ));
-            //});
+            // Måling: E-Stop som tal (0=OK, 1=Nødstop aktiveret)
+            _robotMeter.CreateObservableGauge("robot_estop_code", () =>
+            {
+                return _robots.Select(robot => new Measurement<int>(
+                    GetEStopCode(robot.EStop),
+                    new TagList { { "robot_id", robot.RobotId } }
+                ));
+            });
         }
 
         // Hjælper til at lave status om til tal til grafer
         private static int GetStatusCode(string status) => status switch
         {
-            "Online" => 1, // Alt OK
-            "Oplader" => 2,  // Advarsel
-            "Offline" => 3,  // Fejl
-            _ => 0       // Ukendt
+            "Online" => 1, 
+            "Oplader" => 2,  
+            "Offline" => 3,  
+            _ => 0       
         };
 
         // Hjælper til at oversætte Robottilstand (State) til tal
         private static int GetStateCode(string state) => state switch
         {
-            "Kører" => 1,   // Kører aktivt
-            "Ledig" => 2,     // Venter/Standby
-            "Oplader" => 3, // Lader op
-            "Fejl" => 4,    // Fejltilstand
-            _ => 0           // Ukendt
+            "Kører" => 1,   
+            "Ledig" => 2,     
+            "Oplader" => 3, 
+            "Fejl" => 4,    
+            _ => 0           
         };
 
         // Hjælper til at oversætte Robotopgave (Task) til tal
@@ -215,50 +216,30 @@ namespace RoboMonitor.Controllers
             "Vaskning" => 1,
             "Levering" => 2,
             "Inspektion" => 3,
-            "Ingen" => 4,    // Ingen aktiv opgave
-            _ => 0           // Ukendt
+            "Ingen" => 4,    
+            _ => 0           
         };
 
         // Hjælper til at oversætte Sensorstatus til tal
         private static int GetSensorCode(string sensor) => sensor switch
         {
-            "OK" => 1,       // Alt fungerer (Grøn)
-            "Advarsel" => 2,  // Advarsel, f.eks. snavset sensor (Gul)
-            "Fejl" => 3,    // Fejl, f.eks. blokeret (Rød)
-            _ => 0           // Ukendt
+            "OK" => 1,       
+            "Advarsel" => 2,  
+            "Fejl" => 3,    
+            _ => 0           
         };
 
-        private static int GetEStopCode(string sensor) => sensor switch
+        // private static int GetEStopCode(bool isEStopActive) => isEStopActive ? 2 : 1;
+        private static int GetEStopCode(bool sensor) => sensor switch
         {
-            "False" => 1,      
-            "True" => 2, 
-            _ => 0
+            false => 0,   // OK
+            true => 1,    // Nødstop aktiveret
         };
 
         [HttpGet(Name = "GetRobots")]
         public IEnumerable<Robot> Get()
         {
             return _robots;
-        }
-
-        [HttpPost("update/{id}")]
-        public IActionResult UpdateRobot(int id, [FromBody] Robot inputData)
-        {
-            var robot = _robots.FirstOrDefault(r => r.RobotId == id);
-            if (robot == null) return NotFound();
-
-            // Opdater felterne
-            robot.BatteryLevel = inputData.BatteryLevel;
-            robot.RobotStatus = inputData.RobotStatus;
-            robot.RobotState = inputData.RobotState;
-
-            // De nye felter
-            robot.RobotTask = inputData.RobotTask;
-            robot.SensorStatus = inputData.SensorStatus;
-            robot.Distance = inputData.Distance;
-            robot.CPUTemperature = inputData.CPUTemperature;
-
-            return Ok(new { message = $"Robot {id} manuelt opdateret", data = robot });
         }
 
         // POST endpoint til at simulere ændringer i data
@@ -273,9 +254,7 @@ namespace RoboMonitor.Controllers
                 double tempChange = rnd.NextDouble() * 4 - 2;
                 robot.CPUTemperature = (int)Math.Clamp(robot.CPUTemperature + tempChange, 30.0, 90.0);
 
-                // ---------------------------------------------------------
-                // E-Stop logik
-                // ---------------------------------------------------------
+                // E-Stop har en lille chance for at blive aktiveret, og hvis den er aktiveret, er der en chance for at den deaktiveres igen
                 if (rnd.Next(0, 100) == 99)
                 {
                     robot.EStop = true;
@@ -308,8 +287,7 @@ namespace RoboMonitor.Controllers
                         // Bremsetæller stiger
                         robot.BreakCount += rnd.Next(0, 3);
 
-                        // OPDATERET: Tæller antal løft (Tilføjer 0 eller 1 løft pr. kørsel)
-                        // Du kan justere tallene, hvis den skal løfte oftere/mere
+                        // Lift stiger lidt tilfældigt for at simulere, at robotten løfter ting
                         robot.Lift += rnd.Next(0, 2);
 
                         robot.ChargingTime = 0;
@@ -328,7 +306,6 @@ namespace RoboMonitor.Controllers
                         robot.SensorStatus = "OK";
                         robot.ChargingTime += 5;
 
-                        // FJERNET: robot.Lift = false; (Da vi nu tæller totalen, skal den bare bevare sit tal)
                         break;
 
                     case "Fejl":
@@ -359,7 +336,7 @@ namespace RoboMonitor.Controllers
             return Ok(new { message = "Simulering udført: Alle robotdata er opdateret realistisk", data = _robots });
         }
 
-        // POST endpoint til at tilføje en ny robot dynamisk
+        // Tilføj en robot manuelt via POST /robot/add?id=7
         [HttpPost("add")]
         public IActionResult AddRobot(int id)
         {
@@ -375,6 +352,26 @@ namespace RoboMonitor.Controllers
             });
 
             return Ok($"Robot {id} tilføjet! Den dukker op i Grafana om ca. 5 sekunder.");
+        }
+
+        [HttpPost("update/{id}")]
+        public IActionResult UpdateRobot(int id, [FromBody] Robot inputData)
+        {
+            var robot = _robots.FirstOrDefault(r => r.RobotId == id);
+            if (robot == null) return NotFound();
+
+            // Opdater felterne
+            robot.BatteryLevel = inputData.BatteryLevel;
+            robot.RobotStatus = inputData.RobotStatus;
+            robot.RobotState = inputData.RobotState;
+
+            // De nye felter
+            robot.RobotTask = inputData.RobotTask;
+            robot.SensorStatus = inputData.SensorStatus;
+            robot.Distance = inputData.Distance;
+            robot.CPUTemperature = inputData.CPUTemperature;
+
+            return Ok(new { message = $"Robot {id} manuelt opdateret", data = robot });
         }
     }
 }
