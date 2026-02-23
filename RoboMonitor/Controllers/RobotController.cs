@@ -119,9 +119,19 @@ namespace RoboMonitor.Controllers
                 }
             };
 
+        // SKAL LAVES FÆRDIGT
+        private static TagList GetCommonTags(Robot robot) => new TagList
+        {
+            { "robot_id", robot.RobotId },
+            { "hospital", robot.Hospital },
+            { "department", robot.Department }
+        };
+
         // 3. I den statiske constructor sætter vi vores målinger op, så de automatisk opdateres, når data i listen ændres
         static RobotController()
         {
+
+
             // Måling: Batteriniveau
             _robotMeter.CreateObservableGauge("robotfleet", () =>
             {
