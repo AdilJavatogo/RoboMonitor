@@ -119,13 +119,15 @@ namespace RoboMonitor.Controllers
                 }
             };
 
-        // SKAL LAVES FÆRDIGT
-        private static TagList GetCommonTags(Robot robot) => new TagList
+        private static IEnumerable<KeyValuePair<string, object?>> GetCommonTags(Robot robot)
         {
-            { "robot_id", robot.RobotId },
-            { "hospital", robot.Hospital },
-            { "department", robot.Department }
-        };
+            return new KeyValuePair<string, object?>[]
+            {
+            new("robot_id", robot.RobotId),
+            new("hospital", robot.Hospital),
+            new("department", robot.Department)
+            };
+        }
 
         // 3. I den statiske constructor sætter vi vores målinger op, så de automatisk opdateres, når data i listen ændres
         static RobotController()
@@ -158,8 +160,7 @@ namespace RoboMonitor.Controllers
             _robotMeter.CreateObservableGauge("robot_status_code", () =>
             {
                 return _robots.Select(robot => new Measurement<int>(
-                    GetStatusCode(robot.RobotStatus),
-                    new TagList { { "robot_id", robot.RobotId } }
+                    GetStatusCode(robot.RobotStatus), GetCommonTags(robot)
                 ));
             });
 
@@ -167,8 +168,7 @@ namespace RoboMonitor.Controllers
             _robotMeter.CreateObservableGauge("robot_state_code", () =>
             {
                 return _robots.Select(robot => new Measurement<int>(
-                    GetStateCode(robot.RobotState),
-                    new TagList { { "robot_id", robot.RobotId } }
+                    GetStateCode(robot.RobotState), GetCommonTags(robot)
                 ));
             });
 
@@ -176,8 +176,7 @@ namespace RoboMonitor.Controllers
             _robotMeter.CreateObservableGauge("robot_task_code", () =>
             {
                 return _robots.Select(robot => new Measurement<int>(
-                    GetTaskCode(robot.RobotTask),
-                    new TagList { { "robot_id", robot.RobotId } }
+                    GetTaskCode(robot.RobotTask), GetCommonTags(robot)
                 ));
             });
 
@@ -185,8 +184,7 @@ namespace RoboMonitor.Controllers
             _robotMeter.CreateObservableGauge("robot_sensor_code", () =>
             {
                 return _robots.Select(robot => new Measurement<int>(
-                    GetSensorCode(robot.SensorStatus),
-                    new TagList { { "robot_id", robot.RobotId } }
+                    GetSensorCode(robot.SensorStatus), GetCommonTags(robot)
                 ));
             });
 
@@ -194,10 +192,56 @@ namespace RoboMonitor.Controllers
             _robotMeter.CreateObservableGauge("robot_estop_code", () =>
             {
                 return _robots.Select(robot => new Measurement<int>(
-                    GetEStopCode(robot.EStop),
-                    new TagList { { "robot_id", robot.RobotId } }
+                    GetEStopCode(robot.EStop), GetCommonTags(robot)
                 ));
             });
+
+            //// CPU
+            //_robotMeter.CreateObservableGauge("robot_cpu_temperature", () =>
+            //{
+            //    return _robots.Select(robot => new Measurement<int>(
+            //        robot.CPUTemperature, GetCommonTags(robot)
+            //    ));
+            //});
+            //// distance
+            // _robotMeter.CreateObservableGauge("robot_distance", () =>
+            //{
+            //    return _robots.Select(robot => new Measurement<int>(
+            //        robot.Distance, GetCommonTags(robot)
+            //    ));
+            //});
+
+            //// battery
+            //_robotMeter.CreateObservableGauge("robot_battery", () =>
+            //{
+            //    return _robots.Select(robot => new Measurement<int>(
+            //            robot.BatteryLevel, GetCommonTags(robot)
+            //        ));
+            //});
+
+            //// Lift
+            //_robotMeter.CreateObservableGauge("robot_lift", () =>
+            //{
+            //    return _robots.Select(robot => new Measurement<int>(
+            //        robot.Lift, GetCommonTags(robot)
+            //    ));
+            //});
+
+            //// Charging
+            //_robotMeter.CreateObservableGauge("robot_charging_time", () =>
+            //{
+            //    return _robots.Select(robot => new Measurement<int>(
+            //        robot.ChargingTime, GetCommonTags(robot)
+            //    ));
+            //});
+
+            //// Breakcount
+            //_robotMeter.CreateObservableGauge("robot_break_count", () =>
+            //{
+            //    return _robots.Select(robot => new Measurement<int>(
+            //        robot.BreakCount, GetCommonTags(robot)
+            //    ));
+            //});
         }
 
         // Hjælper til at lave status om til tal til grafer
