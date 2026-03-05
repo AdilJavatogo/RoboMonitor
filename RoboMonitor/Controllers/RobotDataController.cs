@@ -7,16 +7,16 @@ namespace RoboMonitor.Controllers
     [Route("api/[controller]")]
     public class RobotDataController : Controller
     {
-        [HttpPost]
-        public IActionResult PostRobotData([FromBody] Robot robot)
-        {
-            // Prometheus data modtaget - opdater robotten i listen
+        //[HttpPost]
+        //public IActionResult PostRobotData([FromBody] Robot robot)
+        //{
+        //    // Prometheus data modtaget - opdater robotten i listen
 
 
-            Console.WriteLine($"Data mnodtaget: {robot.BatteryLevel}"); // robot.Id osv.
+        //    Console.WriteLine($"Data mnodtaget: {robot.BatteryLevel}"); // robot.Id osv.
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
         [HttpPost]
         public IActionResult PostData([FromBody] Robot robot)
@@ -29,6 +29,12 @@ namespace RoboMonitor.Controllers
                 robotList.BatteryLevel = robot.BatteryLevel;
                 robotList.CPUTemperature = robot.CPUTemperature;
                 robotList.RobotStatus = robot.RobotStatus;
+                robotList.ChargingTime = robot.ChargingTime;
+                robotList.EStop = robot.EStop;
+                robotList.Lift = robot.Lift;
+                robotList.BreakCount = robot.BreakCount;
+                robotList.Department = robot.Department;
+                robotList.Distance = robot.Distance;
 
                 Console.WriteLine($"[UPDATE] Robot {robot.RobotId}: Batteri {robot.BatteryLevel}%");
             }
