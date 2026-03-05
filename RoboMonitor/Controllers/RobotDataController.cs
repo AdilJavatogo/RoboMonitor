@@ -10,11 +10,34 @@ namespace RoboMonitor.Controllers
         [HttpPost]
         public IActionResult PostRobotData([FromBody] Robot robot)
         {
-            // Her kan du tilføje logik til at gemme eller behandle robotdataen
-            // For eksempel, gemme dataen i en database eller sende den til en anden service
-            // Returner en succesrespons
+            // Prometheus data modtaget - opdater robotten i listen
+
 
             Console.WriteLine($"Data mnodtaget: {robot.BatteryLevel}"); // robot.Id osv.
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult PostData([FromBody] Robot robot)
+        {
+            var robotList = RobotController._robots.FirstOrDefault(r => r.RobotId == robot.RobotId);
+
+            if (robotList != null)
+            {
+                // OPDATERE Grafana via den anden liste  - DETTE SKAL NOK LAVES TIL SIN EGEN LISTE SENERE
+                robotList.BatteryLevel = robot.BatteryLevel;
+                robotList.CPUTemperature = robot.CPUTemperature;
+                robotList.RobotStatus = robot.RobotStatus;
+
+                Console.WriteLine($"[UPDATE] Robot {robot.RobotId}: Batteri {robot.BatteryLevel}%");
+            }
+            else
+            {
+                // Tilføj ny robot til listen
+                RobotController._robots.Add(robot);
+                Console.WriteLine($"ID {robot.RobotId} er nu registreret i systemet!");
+            }
 
             return Ok();
         }

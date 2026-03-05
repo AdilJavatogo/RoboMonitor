@@ -2,7 +2,7 @@
 {
     public class Robot
     {
-        public int RobotId { get; set; }
+        public int RobotId { get; set; }                // JSON property name: "id"............
 
         public string Hospital { get; set; }
 

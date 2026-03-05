@@ -13,7 +13,7 @@ namespace RoboMonitor.Controllers
         private static readonly Meter _robotMeter = new("RoboMonitor.Robots", "1.0.0");
 
         // 2. Vi laver en statisk liste til at simulere en database i hukommelsen
-        private static readonly List<Robot> _robots = new()
+        public static readonly List<Robot> _robots = new()
             {
                 new Robot
                 {
@@ -129,7 +129,7 @@ namespace RoboMonitor.Controllers
             };
         }
 
-        // 3. I den statiske constructor sætter vi vores målinger op, så de automatisk opdateres, når data i listen ændres
+        // I den statiske constructor sætter vi vores målinger op, så de automatisk opdateres, når data i listen ændres
         static RobotController()
         {
 
