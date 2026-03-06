@@ -27,7 +27,7 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "OK",         
                     Distance = 125,            
                     CPUTemperature = 45,
-                    Lift = 125,
+                    Lift = 1,
                     EStop = false,
                     ChargingTime = 12,
                     BreakCount = 120
@@ -44,10 +44,10 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "OK",
                     Distance = 125,
                     CPUTemperature = 45,
-                    Lift = 329,
+                    Lift = 1,
                     EStop = false,
                     ChargingTime = 12,
-                    BreakCount = 120
+                    BreakCount = 457
                 },
                 new Robot
                 {
@@ -61,7 +61,7 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "Advarsel",    
                     Distance = 0,              
                     CPUTemperature = 38,
-                    Lift = 13,
+                    Lift = 0,
                     EStop = true,
                     ChargingTime = 30,
                     BreakCount = 50
@@ -78,10 +78,10 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "Advarsel",
                     Distance = 0,
                     CPUTemperature = 38,
-                    Lift = 56,
+                    Lift = 1,
                     EStop = true,
                     ChargingTime = 30,
-                    BreakCount = 50
+                    BreakCount = 567
                 },
                 new Robot
                 {
@@ -95,7 +95,7 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "Fejl",      
                     Distance = 1050,           
                     CPUTemperature = 65,
-                    Lift = 594,
+                    Lift = 1,
                     EStop = false,
                     ChargingTime = 15,
                     BreakCount = 200
@@ -112,10 +112,10 @@ namespace RoboMonitor.Controllers
                     SensorStatus = "Fejl",
                     Distance = 1050,
                     CPUTemperature = 65,
-                    Lift = 457,
+                    Lift = 0,
                     EStop = false,
                     ChargingTime = 15,
-                    BreakCount = 200
+                    BreakCount = 623
                 }
             };
 
@@ -244,50 +244,7 @@ namespace RoboMonitor.Controllers
             //});
         }
 
-        // Hjælper til at lave status om til tal til grafer
-        private static int GetStatusCode(string status) => status switch
-        {
-            "Online" => 1, 
-            "Oplader" => 2,  
-            "Offline" => 3,  
-            _ => 0       
-        };
-
-        // Hjælper til at oversætte Robottilstand (State) til tal
-        private static int GetStateCode(string state) => state switch
-        {
-            "Kører" => 1,   
-            "Ledig" => 2,     
-            "Oplader" => 3, 
-            "Fejl" => 4,    
-            _ => 0           
-        };
-
-        // Hjælper til at oversætte Robotopgave (Task) til tal
-        private static int GetTaskCode(string task) => task switch
-        {
-            "Vaskning" => 1,
-            "Levering" => 2,
-            "Inspektion" => 3,
-            "Ingen" => 4,    
-            _ => 0           
-        };
-
-        // Hjælper til at oversætte Sensorstatus til tal
-        private static int GetSensorCode(string sensor) => sensor switch
-        {
-            "OK" => 1,       
-            "Advarsel" => 2,  
-            "Fejl" => 3,    
-            _ => 0           
-        };
-
-        // private static int GetEStopCode(bool isEStopActive) => isEStopActive ? 2 : 1;
-        private static int GetEStopCode(bool sensor) => sensor switch
-        {
-            false => 0,   // OK
-            true => 1,    // Nødstop aktiveret
-        };
+       
 
         [HttpGet(Name = "GetRobots")]
         public IEnumerable<Robot> Get()
@@ -426,5 +383,50 @@ namespace RoboMonitor.Controllers
 
             return Ok(new { message = $"Robot {id} manuelt opdateret", data = robot });
         }
+
+        // Hjælper til at lave status om til tal til grafer
+        private static int GetStatusCode(string status) => status switch
+        {
+            "Online" => 1,
+            "Oplader" => 2,
+            "Offline" => 3,
+            _ => 0
+        };
+
+        // Hjælper til at oversætte Robottilstand (State) til tal
+        private static int GetStateCode(string state) => state switch
+        {
+            "Kører" => 1,
+            "Ledig" => 2,
+            "Oplader" => 3,
+            "Fejl" => 4,
+            _ => 0
+        };
+
+        // Hjælper til at oversætte Robotopgave (Task) til tal
+        private static int GetTaskCode(string task) => task switch
+        {
+            "Vaskning" => 1,
+            "Levering" => 2,
+            "Inspektion" => 3,
+            "Ingen" => 4,
+            _ => 0
+        };
+
+        // Hjælper til at oversætte Sensorstatus til tal
+        private static int GetSensorCode(string sensor) => sensor switch
+        {
+            "OK" => 1,
+            "Advarsel" => 2,
+            "Fejl" => 3,
+            _ => 0
+        };
+
+        // private static int GetEStopCode(bool isEStopActive) => isEStopActive ? 2 : 1;
+        private static int GetEStopCode(bool sensor) => sensor switch
+        {
+            false => 0,   // OK
+            true => 1,    // Nødstop aktiveret
+        };
     }
 }
