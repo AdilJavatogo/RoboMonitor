@@ -4,33 +4,43 @@ services:
       context: .
       dockerfile: RoboMonitor/Dockerfile
     ports:
-      - "5280:8080" # Udstiller port 8080 internt til 5280 eksternt (hvis du vil ramme det fra en browser)
+      - "5280:8080" # 5280 ekstern og 8080 intern
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    restart: always
 
   prometheus:
     image: prom/prometheus
     volumes:
       - ./AspireRoboMonitor/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
     ports:
-      - "9090:9090"
+      - "9091:9090"
     depends_on:
       - api
+    restart: always
 
   grafana:
     image: grafana/grafana
     volumes:
       - ./AspireRoboMonitor/grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - grafana_data:/var/lib/grafana
     ports:
       - "3030:3000"
     depends_on:
       - prometheus
+    restart: always
 
   python_bot:
     build:
       context: ../ScrabeBot/ros2_ws/src/scrabe_bot_app
     environment:
-      # Læg mærke til url'en! Den bruger containernavnet 'api'
+      # api:8080
       - API_URL=http://api:8080 
     depends_on:
       - api
+    restart: always
+
+volumes:
+  prometheus_data:
+  grafana_data:
