@@ -15,6 +15,8 @@ builder.Services.AddSingleton<RobotMetrics>(); // Services
 
 var app = builder.Build();
 
+app.Services.GetRequiredService<RobotMetrics>(); // Dette tvinger instansieringen af RobotMetrics, så dine Gauges oprettes
+
 app.MapGet("/", () => "Hej fra OpenTelemetry!");
 
 // Configure the HTTP request pipeline.
