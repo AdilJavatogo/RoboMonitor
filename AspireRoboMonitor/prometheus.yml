@@ -5,4 +5,4 @@ scrape_configs:
   - job_name: 'RobotMonitor'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['host.docker.internal:5280']
+      - targets: ['api:8080'] # 'host.docker.internal:5280'
