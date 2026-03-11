@@ -40,4 +40,4 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
-          provenance: false
+          #provenance: false
