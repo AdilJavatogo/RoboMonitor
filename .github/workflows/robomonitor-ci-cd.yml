@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   # Dette navngiver dit image, f.eks. ghcr.io/dit-github-navn/robomonitor-api
-  IMAGE_NAME: ${{ github.repository_owner }}/robomonitor-api
+  IMAGE_NAME: adiljavatogo/robomonitor-api
 
 jobs:
   build-and-push:
