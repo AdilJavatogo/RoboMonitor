@@ -1,1 +1,39 @@
+name: Byg og Push RoboMonitor API
 
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  # Dette navngiver dit image, f.eks. ghcr.io/dit-github-navn/robomonitor-api
+  IMAGE_NAME: ${{ github.repository_owner }}/robomonitor-api
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    # Dette giver scriptet lov til at uploade pakker til GitHub
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Hent koden
+        uses: actions/checkout@v4
+
+      #- name: Log ind på GitHub Container Registry
+      #  uses: docker/login-action@v3
+      #  with:
+      #   registry: ${{ env.REGISTRY }}
+      #    username: ${{ github.actor }}
+      #    # GITHUB_TOKEN genereres automatisk af GitHub, du skal ikke oprette den manuelt
+      #    password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Byg og push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          # Sørg for at stien her matcher præcis, hvor din Dockerfile ligger i repoet
+          file: RoboMonitor/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
