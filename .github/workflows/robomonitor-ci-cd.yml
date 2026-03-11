@@ -8,13 +8,11 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # Dette navngiver dit image, f.eks. ghcr.io/dit-github-navn/robomonitor-api
   IMAGE_NAME: adiljavatogo/robomonitor-api
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    # Dette giver scriptet lov til at uploade pakker til GitHub
     permissions:
       contents: read
       packages: write
