@@ -23,13 +23,13 @@ jobs:
       - name: Hent koden
         uses: actions/checkout@v4
 
-      #- name: Log ind på GitHub Container Registry
-      #  uses: docker/login-action@v3
-      #  with:
-      #   registry: ${{ env.REGISTRY }}
-      #    username: ${{ github.actor }}
-      #    # GITHUB_TOKEN genereres automatisk af GitHub, du skal ikke oprette den manuelt
-      #    password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log ind på GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          # 1. RETTELSE: Skriv dit navn manuelt med småt i stedet for variablen
+          username: adiljavatogo 
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Byg og push Docker image
         uses: docker/build-push-action@v5
