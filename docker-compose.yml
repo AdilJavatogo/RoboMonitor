@@ -35,7 +35,7 @@ services:
     build:
       context: ../ScrabeBot/ros2_ws/src/scrabe_bot_app
     # Vi overskriver standard-kommandoen til at starte pub i stedet for sub
-    command: ["/bin/bash", "-c", "source /opt/ros/humble/setup.bash && source install/setup.bash && ros2 run scrabe_bot_app scrabe_pub"]
+    command: ["/bin/bash", "-c", "source install/setup.bash && ros2 run scrabe_bot_app scrabe_pub"]
     restart: always
 
   python_subscriber:
