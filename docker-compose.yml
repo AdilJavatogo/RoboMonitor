@@ -31,6 +31,7 @@ services:
       - prometheus
     restart: always
 
+  # en Docker service for både publisher og subscriber, da de begge er skrevet i Python og deler samme kodebase
   python_publisher:
     build:
       context: ../ScrabeBot/ros2_ws/src/scrabe_bot_app
