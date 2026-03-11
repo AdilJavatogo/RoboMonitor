@@ -35,7 +35,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          # Sørg for at stien her matcher præcis, hvor din Dockerfile ligger i repoet
           file: RoboMonitor/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
