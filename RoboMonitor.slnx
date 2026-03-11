@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path=".github/workflows/build-api.yml" />
     <File Path="README.md" />
   </Folder>
   <Project Path="AspireRoboMonitor/AspireRoboMonitor.csproj" />
