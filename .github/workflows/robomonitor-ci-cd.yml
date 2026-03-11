@@ -39,3 +39,5 @@ jobs:
           file: RoboMonitor/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+          provenance: false
