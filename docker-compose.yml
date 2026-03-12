@@ -2,8 +2,8 @@ services:
   api:
       # Nu trækker vi direkte fra GitHub
       image: ghcr.io/adiljavatogo/robomonitor-api:latest
-      ports:
-        - "5280:8080"
+      # ports:
+      #   - "5280:8080"
       environment:
         - ASPNETCORE_ENVIRONMENT=Production
       restart: always
@@ -23,8 +23,8 @@ services:
     volumes:
       - ./AspireRoboMonitor/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
-    ports:
-      - "9091:9090"
+    # ports:
+    #   - "9091:9090"
     depends_on:
       - api
     restart: always
