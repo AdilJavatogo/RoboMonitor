@@ -3,6 +3,9 @@ name: Build and Push API
 on:
   push:
     branches: [ "main" ]
+  repository_dispatch:
+    types: [pub/sub_image_updated]
+    
   workflow_dispatch:
 
 env:
@@ -34,4 +37,9 @@ jobs:
           file: RoboMonitor/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          provenance: false
+          #provenance: false
+
+      - name: Modtag event og opdater
+        run: |
+          echo "Pub/Sub node er blevet opdateret"
+          echo "Det nye tag er: ${{ github.event.client_payload.image_tag }}"
