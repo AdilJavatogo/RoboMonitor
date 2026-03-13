@@ -1,12 +1,12 @@
 services:
   api:
-      # Nu trækker vi direkte fra GitHub
-      image: ghcr.io/adiljavatogo/robomonitor-api:latest
-      # ports:
-      #   - "5280:8080"
-      environment:
-        - ASPNETCORE_ENVIRONMENT=Production
-      restart: always
+    # Nu trækker vi direkte fra GitHub
+    image: ghcr.io/adiljavatogo/robomonitor-api:latest
+    # ports:
+    #   - "5280:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    restart: always
 
   # api:
   #   build:
