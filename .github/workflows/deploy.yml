@@ -18,7 +18,7 @@ jobs:
         with:
           registry: ghcr.io
           username: adiljavatogo
-          password: ${{ secrets.GET_SCRABE_ACCESS_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test Docker Compose Pull
         run: |
