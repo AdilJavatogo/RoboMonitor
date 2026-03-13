@@ -3,6 +3,7 @@ name: Deployment
 on:
   repository_dispatch:
     types: [pub/sub_image_updated]
+    
   workflow_dispatch:
 
 jobs:
