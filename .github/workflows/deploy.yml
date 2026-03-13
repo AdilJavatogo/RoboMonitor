@@ -1,1 +1,39 @@
+name: Test Deployment
 
+on:
+  repository_dispatch:
+    types: [pub/sub_image_updated]
+  workflow_dispatch:
+
+jobs:
+  test_docker_compose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hent koden
+        uses: actions/checkout@v4
+        
+      - name: Log ind på GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: adiljavatogo
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Test Docker Compose Pull
+        run: |
+          echo "Trækker de nyeste images ned fra GitHub Registry..."
+          docker compose pull
+
+      - name: Test Docker Compose Up
+        run: |
+          echo "Starter miljøet op på GitHubs runner..."
+          docker compose up -d
+          
+      - name: Tjek at containerne kører
+        run: |
+          # Vi venter lige 5 sekunder for at se, om nogen af dem crasher med det samme
+          sleep 5
+          docker ps
+          
+          # Tjekker logs for API'et for at sikre det startede korrekt
+          docker compose logs api
