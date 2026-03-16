@@ -3,6 +3,6 @@ datasources:
   - name: Prometheus
     type: prometheus
     access: proxy
-    # BRUG DETTE NAVN (Det matcher container-navnet i AppHost)
+    uid: prometheus
     url: http://prometheus:9090 
     isDefault: true
