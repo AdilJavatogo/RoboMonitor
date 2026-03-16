@@ -18,4 +18,4 @@ providers:
     disableDeletion: false
     updateIntervalSeconds: 10
     options:
-      path: /etc/grafana/provisioning/dashboards_data/Herlev
+      path: /etc/grafana/provisioning/dashboards_data/Herlev Hospital
