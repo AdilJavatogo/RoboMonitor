@@ -1,0 +1,426 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "cfflfvawh2mm8c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 3,
+            "spanNulls": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Online"
+                      },
+                      "2": {
+                        "color": "yellow",
+                        "index": 1,
+                        "text": "Oplader"
+                      },
+                      "3": {
+                        "color": "red",
+                        "index": 2,
+                        "text": "Offline"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Kører"
+                      },
+                      "2": {
+                        "color": "blue",
+                        "index": 1,
+                        "text": "Ledig"
+                      },
+                      "3": {
+                        "color": "yellow",
+                        "index": 2,
+                        "text": "Oplader"
+                      },
+                      "4": {
+                        "color": "red",
+                        "index": 3,
+                        "text": "Fejl"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "#a9a9a9",
+                        "index": 0,
+                        "text": "Ingen"
+                      },
+                      "1": {
+                        "color": "purple",
+                        "index": 1,
+                        "text": "Vaskning"
+                      },
+                      "2": {
+                        "color": "green",
+                        "index": 2,
+                        "text": "Levering"
+                      },
+                      "3": {
+                        "color": "red",
+                        "index": 3,
+                        "text": "Inspektion"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "D"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "OK"
+                      },
+                      "2": {
+                        "color": "yellow",
+                        "index": 1,
+                        "text": "Advarsel"
+                      },
+                      "3": {
+                        "color": "red",
+                        "index": 2,
+                        "text": "Fejl"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "E"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Kører"
+                      },
+                      "1": {
+                        "color": "red",
+                        "index": 1,
+                        "text": "Nødstop"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "always",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "cfflfvawh2mm8c"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "robot_status_code{robot_id=~\"$robotid\"}",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "Status (Robot {{robot_id}})",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "cfflfvawh2mm8c"
+          },
+          "editorMode": "code",
+          "expr": "robot_state_code{robot_id=~\"$robotid\"}",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "Tilstand (Robot {{robot_id}})",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "cfflfvawh2mm8c"
+          },
+          "editorMode": "code",
+          "expr": "robot_task_code{robot_id=~\"$robotid\"}",
+          "instant": false,
+          "legendFormat": "Opgave (Robot {{robot_id}})",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "cfflfvawh2mm8c"
+          },
+          "editorMode": "code",
+          "expr": "robot_sensor_code{robot_id=~\"$robotid\"}",
+          "instant": false,
+          "legendFormat": "Sensor (Robot {{robot_id}})",
+          "range": true,
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "cfflfvawh2mm8c"
+          },
+          "editorMode": "code",
+          "expr": "robot_estop_code{robot_id=~\"$robotid\"}",
+          "instant": false,
+          "legendFormat": "E-Stop (Robot {{robot_id}})",
+          "range": true,
+          "refId": "E"
+        }
+      ],
+      "title": "Robot",
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ffcwlse5pcb28e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 10,
+        "x": 0,
+        "y": 11
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ffcwlse5pcb28e"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Ladetid",
+      "type": "piechart"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "cfflfvawh2mm8c"
+        },
+        "definition": "label_values(robotfleet{hospital=\"Herlev Hospital\"},robot_id)",
+        "includeAll": true,
+        "label": "VÆLG ROBOT",
+        "name": "robotid",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(robotfleet{hospital=\"Herlev Hospital\"},robot_id)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Historik",
+  "uid": "adlqxzq",
+  "version": 5,
+  "weekStart": ""
+}

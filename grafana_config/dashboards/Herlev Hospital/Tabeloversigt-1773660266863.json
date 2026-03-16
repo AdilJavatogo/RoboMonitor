@@ -1,0 +1,560 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "cfflfvawh2mm8c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "wrapHeaderText": false,
+            "wrapText": false
+          },
+          "fieldMinMax": false,
+          "links": [],
+          "mappings": [
+            {
+              "options": {
+                "Offline": {
+                  "index": 0,
+                  "text": "🔴 Offline"
+                },
+                "Online": {
+                  "index": 1,
+                  "text": "🟢 Online"
+                },
+                "Oplader": {
+                  "index": 2,
+                  "text": "🟡 Oplader"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Batteri Nieavu"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "%"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 10
+                    },
+                    {
+                      "color": "green",
+                      "value": 30
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 200
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Temperatur"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 50
+                    },
+                    {
+                      "color": "red",
+                      "value": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tilstand"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "Fejl": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "Fejl"
+                      },
+                      "Kører": {
+                        "color": "transparent",
+                        "index": 2,
+                        "text": "Kører"
+                      },
+                      "Ledig": {
+                        "color": "transparent",
+                        "index": 3,
+                        "text": "Ledig"
+                      },
+                      "Oplader": {
+                        "color": "transparent",
+                        "index": 1,
+                        "text": "Oplader"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "applyToRow": false,
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ladetid"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "minutter"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Robot Id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Se Historik",
+                    "url": "http://localhost:3030/d/adlqxzq/historik?orgId=1&from=now-6h&to=now&timezone=browser&var-robotid=${__value.raw}"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "alt": "",
+                  "title": "",
+                  "type": "image"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "E-Stop"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "false": {
+                        "color": "transparent",
+                        "index": 0,
+                        "text": "Kører"
+                      },
+                      "true": {
+                        "color": "red",
+                        "index": 1,
+                        "text": "Nødstop"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sensor"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "Advarsel": {
+                        "color": "yellow",
+                        "index": 2,
+                        "text": "Advarsel"
+                      },
+                      "Fejl": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "Fejl"
+                      },
+                      "OK": {
+                        "color": "transparent",
+                        "index": 1,
+                        "text": "OK"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Bremse Aktiveringer"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 450
+                    },
+                    {
+                      "color": "red",
+                      "value": 500
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Løft"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "index": 0,
+                        "text": "Nede"
+                      },
+                      "1": {
+                        "index": 1,
+                        "text": "Oppe"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "cfflfvawh2mm8c"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "robotfleet{hospital=\"Herlev Hospital\", department=~\"$department\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Robot Tabel",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "keepLabels": [
+              "robot_id",
+              "status_text",
+              "__name__",
+              "state",
+              "sensor",
+              "task",
+              "temperature"
+            ],
+            "mode": "columns"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": false,
+              "__name__": true,
+              "instance": true,
+              "job": true,
+              "otel_scope_name": true,
+              "otel_scope_version": true,
+              "sensor": false,
+              "state": false,
+              "status_text": false,
+              "temperature": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 12,
+              "Value": 3,
+              "__name__": 2,
+              "break_count": 13,
+              "charging_time": 14,
+              "department": 18,
+              "estop": 15,
+              "hospital": 17,
+              "instance": 8,
+              "job": 9,
+              "lift": 16,
+              "otel_scope_name": 10,
+              "otel_scope_version": 11,
+              "robot_id": 0,
+              "sensor": 5,
+              "state": 7,
+              "status_text": 1,
+              "task": 6,
+              "temperature": 4
+            },
+            "orderByMode": "manual",
+            "renameByName": {
+              "Value": "Batteri Nieavu",
+              "__name__": "Navn",
+              "break_count": "Bremse Aktiveringer",
+              "charging_time": "Ladetid",
+              "department": "Afdeling",
+              "estop": "E-Stop",
+              "hospital": "Hospital",
+              "lift": "Løft",
+              "robot_id": "Robot Id",
+              "sensor": "Sensor",
+              "state": "Tilstand",
+              "status_text": "Status",
+              "task": "Opgave",
+              "temperature": "CPU Temperatur"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "Bremse Aktiveringer"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "cfflfvawh2mm8c"
+        },
+        "definition": "label_values(robotfleet,department)",
+        "includeAll": true,
+        "label": "AFDELING",
+        "name": "department",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(robotfleet,department)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Tabeloversigt",
+  "uid": "adtqfjv",
+  "version": 10,
+  "weekStart": ""
+}
