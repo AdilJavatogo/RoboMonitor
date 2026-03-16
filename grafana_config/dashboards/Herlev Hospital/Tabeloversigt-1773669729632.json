@@ -241,7 +241,7 @@
                   {
                     "targetBlank": true,
                     "title": "Se Historik",
-                    "url": "http://46.225.0.14:3030/d/adlqxzq/historik?orgId=1&from=now-6h&to=now&timezone=browser&var-robotid=${__value.raw}"
+                    "url": "http://localhost:3000/d/adlqxzq/historik?orgId=1&from=now-6h&to=now&timezone=browser&var-robotid=${__value.raw}"
                   }
                 ]
               },
@@ -396,7 +396,7 @@
         ]
       },
       "gridPos": {
-        "h": 18,
+        "h": 14,
         "w": 24,
         "x": 0,
         "y": 0
@@ -417,7 +417,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "robotfleet{hospital=\"Herlev Hospital\", department=~\"$department\"}",
+          "expr": "robotfleet{hospital=\"OUH\", department=~\"$department\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -521,7 +521,6 @@
   "templating": {
     "list": [
       {
-        "allowCustomValue": false,
         "current": {
           "text": "All",
           "value": "$__all"
@@ -540,7 +539,7 @@
           "query": "label_values(robotfleet,department)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
-        "refresh": 2,
+        "refresh": 1,
         "regex": "",
         "regexApplyTo": "value",
         "type": "query"
@@ -554,7 +553,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Tabeloversigt",
-  "uid": "adtqfjv",
-  "version": 2,
+  "uid": "adjp4g5",
+  "version": 1,
   "weekStart": ""
 }
