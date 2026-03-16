@@ -1,40 +1,38 @@
-name: Deployment
+name: Deploy to Hetzner
 
 on:
+  push:
+    branches: [ "main" ]
   repository_dispatch:
     types: [pub/sub_image_updated]
     
   workflow_dispatch:
 
 jobs:
-  test_docker_compose:
+  deploy:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Hent koden
-        uses: actions/checkout@v4
-        
-      - name: Log ind på GHCR
-        uses: docker/login-action@v3
+      - name: Deploy via SSH til server
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          registry: ghcr.io
-          username: adiljavatogo
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Test Docker Compose Pull
-        run: |
-          echo "Trækker de nyeste images ned fra GitHub Registry..."
-          docker compose pull
-
-      - name: Test Docker Compose Up
-        run: |
-          echo "Starter miljøet op på GitHubs runner..."
-          docker compose up -d
-          
-      - name: Tjek at containerne kører
-        run: |
-          # Vi venter lige 5 sekunder for at se, om nogen af dem crasher med det samme
-          sleep 5
-          docker ps
-          
-          # Tjekker logs for API'et for at sikre det startede korrekt
-          docker compose logs api
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USERNAME }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          script: |
+            # 1. Naviger til den mappe på din Hetzner server, hvor din docker-compose.yml ligger
+            # HUSK AT RETTE DENNE STI TIL DIN RIGTIGE MAPPE!
+            cd /sti/til/dit/projekt/robomonitor
+            
+            # 2. Log ind på GitHub Container Registry (GHCR) for at kunne trække images
+            # Vi sender et Personal Access Token (PAT) via secrets ind i docker login
+            echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u adiljavatogo --password-stdin
+            
+            # 3. Træk de absolut nyeste versioner af dine images ned fra GitHub
+            docker compose pull
+            
+            # 4. Genstart containerne med de nye images (kører i baggrunden)
+            docker compose up -d
+            
+            # 5. Valgfrit: Ryd op i gamle images, så din Hetzner server ikke løber tør for plads
+            docker image prune -af
