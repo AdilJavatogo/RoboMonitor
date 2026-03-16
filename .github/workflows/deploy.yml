@@ -27,7 +27,7 @@ jobs:
           username: ${{ secrets.HETZNER_USERNAME }}
           key: ${{ secrets.HETZNER_SSH_KEY }}
           script: |
-            cd /root/robomonitor
+            cd /root/RoboMonitor
 
             git pull
             
