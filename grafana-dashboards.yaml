@@ -1,0 +1,21 @@
+apiVersion: 1
+
+providers:
+  - name: 'OUH'
+    orgId: 1
+    folder: 'OUH' # Dette er navnet på den mappe, Grafana opretter i brugerfladen
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    options:
+      # Dette er stien INDE i Docker-containeren, hvor filerne vil ligge
+      path: /etc/grafana/provisioning/dashboards_data/OUH
+
+  - name: 'Herlev'
+    orgId: 1
+    folder: 'Herlev Hospital'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    options:
+      path: /etc/grafana/provisioning/dashboards_data/Herlev

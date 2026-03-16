@@ -21,7 +21,7 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
-      - ./AspireRoboMonitor/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus_config/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     # ports:
     #   - "9091:9090"
@@ -31,8 +31,19 @@ services:
 
   grafana:
     image: grafana/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     volumes:
-      - ./AspireRoboMonitor/grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      # Datasource
+      - ./grafana_config/grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      
+      # 
+      - ./grafana_config/grafana-dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      
+      #
+      - ./grafana_config/dashboards:/etc/grafana/provisioning/dashboards_data
+      
+      # Grafana data, så vi ikke mister vores dashboards og datasource konfiguration ved genstart
       - grafana_data:/var/lib/grafana
     ports:
       - "3030:3000"
