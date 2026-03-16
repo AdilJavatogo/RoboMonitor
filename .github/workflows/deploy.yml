@@ -1,8 +1,10 @@
 name: Deploy to Hetzner
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: ["Build and Push API"]
+    types:
+      - completed
   repository_dispatch:
     types: [pub/sub_image_updated]
     
@@ -11,6 +13,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    if: >
+      github.event_name == 'repository_dispatch' || 
+      github.event_name == 'workflow_dispatch' || 
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     
     steps:
       - name: Deploy via SSH til server
