@@ -1,17 +1,9 @@
 <Solution>
-  <Folder Name="/grafana_config/">
-    <File Path="AspireRoboMonitor/grafana-datasource.yaml" />
-    <File Path="grafana-dashboards.yaml" />
-  </Folder>
+  <Folder Name="/grafana_config/" />
   <Folder Name="/grafana_config/dashboards/" />
-  <Folder Name="/grafana_config/dashboards/Herlev Hospital/" />
-  <Folder Name="/grafana_config/dashboards/OUH/" />
-  <Folder Name="/prometheus_config/">
-    <File Path="AspireRoboMonitor/prometheus.yml" />
-  </Folder>
+  <Folder Name="/prometheus_config/" />
   <Folder Name="/Solution Items/">
     <File Path=".github/workflows/build-api.yml" />
-    <File Path="AspireRoboMonitor/prometheus.yml" />
     <File Path="docker-compose.override.yml" />
     <File Path="docker-compose.yml" />
     <File Path="README.md" />
