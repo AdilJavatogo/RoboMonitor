@@ -3,7 +3,7 @@ apiVersion: 1
 providers:
   - name: 'OUH'
     orgId: 1
-    folder: 'OUH' # Dette er navnet på den mappe, Grafana opretter i brugerfladen
+    folder: 'OUH' # Dette er navnet pÃ¥ den mappe, Grafana opretter i brugerfladen
     type: file
     disableDeletion: false
     updateIntervalSeconds: 10
