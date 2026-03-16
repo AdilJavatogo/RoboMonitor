@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.HETZNER_USERNAME }}
           key: ${{ secrets.HETZNER_SSH_KEY }}
           script: |
-            cd /sti/til/dit/projekt/robomonitor
+            cd /root/robomonitor
             
             echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u adiljavatogo --password-stdin
             docker compose pull
