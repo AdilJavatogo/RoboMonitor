@@ -2,7 +2,7 @@ name: Build and Push API
 
 on:
   push:
-    branches: [ "main" ] # husk også pull reuqest
+    branches: [ "master" ] # husk også pull reuqest
     
   workflow_dispatch:
 
