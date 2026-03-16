@@ -1,0 +1,35 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches: [ "main" ]
+  repository_dispatch:
+    types: [pub/sub_image_updated]
+    
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Deploy via SSH til server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USERNAME }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          script: |
+            cd /sti/til/dit/projekt/robomonitor
+            
+            echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u adiljavatogo --password-stdin
+            docker compose pull
+            
+            # Vi aktiverer GitHub Secret'en som en miljøvariabel på serveren, 
+            # så docker compose kan læse den
+            export GRAFANA_PASSWORD="${{ secrets.GRAFANA_PASSWORD }}"
+            
+            # Starter systemet op (nu med den korrekte adgangskode i hukommelsen)
+            docker compose up -d
+            
+            docker image prune -af

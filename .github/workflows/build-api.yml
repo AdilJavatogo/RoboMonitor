@@ -2,9 +2,7 @@ name: Build and Push API
 
 on:
   push:
-    branches: [ "main" ]
-  repository_dispatch:
-    types: [pub/sub_image_updated]
+    branches: [ "main" ] # husk også pull reuqest
     
   workflow_dispatch:
 
