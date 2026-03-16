@@ -38,7 +38,7 @@ services:
       - ./grafana_config/grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       
       # 
-      - ./grafana_config/grafana-dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./grafana_config/grafana-dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards/grafana-dashboards.yaml
       
       #
       - ./grafana_config/dashboards:/etc/grafana/provisioning/dashboards_data

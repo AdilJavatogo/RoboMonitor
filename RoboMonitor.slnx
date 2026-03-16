@@ -1,8 +1,13 @@
 <Solution>
-  <Folder Name="/grafana_config/" />
-  <Folder Name="/grafana_config/dashboards/" />
-  <Folder Name="/prometheus_config/" />
+  <Folder Name="/grafana_config/">
+    <File Path="grafana_config/grafana-dashboards.yaml" />
+    <File Path="grafana_config/grafana-datasource.yaml" />
+  </Folder>
+  <Folder Name="/prometheus_config/">
+    <File Path="prometheus_config/prometheus.yml" />
+  </Folder>
   <Folder Name="/Solution Items/">
+    <File Path=".env" />
     <File Path=".github/workflows/build-api.yml" />
     <File Path="docker-compose.override.yml" />
     <File Path="docker-compose.yml" />

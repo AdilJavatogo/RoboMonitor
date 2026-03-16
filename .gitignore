@@ -364,3 +364,5 @@ FodyWeavers.xsd
 
 # Local Docker overrides
 docker-compose.override.yml
+
+.env
