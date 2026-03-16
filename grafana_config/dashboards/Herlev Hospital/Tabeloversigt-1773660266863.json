@@ -23,7 +23,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cfflfvawh2mm8c"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -413,7 +413,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cfflfvawh2mm8c"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -528,7 +528,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "cfflfvawh2mm8c"
+          "uid": "prometheus"
         },
         "definition": "label_values(robotfleet,department)",
         "includeAll": true,

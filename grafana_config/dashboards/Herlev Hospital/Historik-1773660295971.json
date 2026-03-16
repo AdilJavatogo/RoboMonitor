@@ -23,7 +23,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "cfflfvawh2mm8c"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -254,7 +254,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cfflfvawh2mm8c"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -268,7 +268,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cfflfvawh2mm8c"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "robot_state_code{robot_id=~\"$robotid\"}",
@@ -281,7 +281,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cfflfvawh2mm8c"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "robot_task_code{robot_id=~\"$robotid\"}",
@@ -293,7 +293,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cfflfvawh2mm8c"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "robot_sensor_code{robot_id=~\"$robotid\"}",
@@ -305,7 +305,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "cfflfvawh2mm8c"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "robot_estop_code{robot_id=~\"$robotid\"}",
@@ -321,7 +321,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "ffcwlse5pcb28e"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -372,7 +372,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "ffcwlse5pcb28e"
+            "uid": "prometheus"
           },
           "refId": "A"
         }
@@ -394,7 +394,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "cfflfvawh2mm8c"
+          "uid": "prometheus"
         },
         "definition": "label_values(robotfleet{hospital=\"Herlev Hospital\"},robot_id)",
         "includeAll": true,
