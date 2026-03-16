@@ -20,19 +20,16 @@ jobs:
           username: ${{ secrets.HETZNER_USERNAME }}
           key: ${{ secrets.HETZNER_SSH_KEY }}
           script: |
-            # 1. Naviger til den mappe på din Hetzner server, hvor din docker-compose.yml ligger
-            # HUSK AT RETTE DENNE STI TIL DIN RIGTIGE MAPPE!
             cd /sti/til/dit/projekt/robomonitor
             
-            # 2. Log ind på GitHub Container Registry (GHCR) for at kunne trække images
-            # Vi sender et Personal Access Token (PAT) via secrets ind i docker login
             echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u adiljavatogo --password-stdin
-            
-            # 3. Træk de absolut nyeste versioner af dine images ned fra GitHub
             docker compose pull
             
-            # 4. Genstart containerne med de nye images (kører i baggrunden)
+            # Vi aktiverer GitHub Secret'en som en miljøvariabel på serveren, 
+            # så docker compose kan læse den
+            export GRAFANA_PASSWORD="${{ secrets.GRAFANA_PASSWORD }}"
+            
+            # Starter systemet op (nu med den korrekte adgangskode i hukommelsen)
             docker compose up -d
             
-            # 5. Valgfrit: Ryd op i gamle images, så din Hetzner server ikke løber tør for plads
             docker image prune -af
