@@ -6,7 +6,7 @@
   <Folder Name="/grafana_config/dashboards/" />
   <Folder Name="/grafana_config/dashboards/Herlev Hospital/">
     <File Path="grafana_config/dashboards/Herlev Hospital/Historik-1773660295971.json" />
-    <File Path="grafana_config/dashboards/Herlev Hospital/Tabeloversigt-1773660266863.json" />
+    <File Path="grafana_config/dashboards/Herlev Hospital/Tabeloversigt-1773668115850.json" />
   </Folder>
   <Folder Name="/grafana_config/dashboards/OUH/">
     <File Path="grafana_config/dashboards/OUH/Tabeloversigt-1773660320656.json" />

@@ -241,7 +241,7 @@
                   {
                     "targetBlank": true,
                     "title": "Se Historik",
-                    "url": "http://localhost:3030/d/adlqxzq/historik?orgId=1&from=now-6h&to=now&timezone=browser&var-robotid=${__value.raw}"
+                    "url": "http://46.225.0.14:3030/d/adlqxzq/historik?orgId=1&from=now-6h&to=now&timezone=browser&var-robotid=${__value.raw}"
                   }
                 ]
               },
@@ -555,6 +555,6 @@
   "timezone": "browser",
   "title": "Tabeloversigt",
   "uid": "adtqfjv",
-  "version": 10,
+  "version": 2,
   "weekStart": ""
 }
