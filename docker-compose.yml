@@ -34,13 +34,13 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     volumes:
-      # Datasource
+      # Datasource provisioning, som fortæller Grafana hvor vores datasource YAML-fil ligger
       - ./grafana_config/grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       
-      # 
+      # Dashboard provisioning, som fortæller Grafana hvor vores dashboard JSON-filer ligger
       - ./grafana_config/grafana-dashboards.yaml:/etc/grafana/provisioning/dashboards/grafana-dashboards.yaml
       
-      #
+      # Selve dashboard JSON-filerne
       - ./grafana_config/dashboards:/etc/grafana/provisioning/dashboards_data
       
       # Grafana data, så vi ikke mister vores dashboards og datasource konfiguration ved genstart
