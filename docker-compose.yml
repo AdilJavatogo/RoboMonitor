@@ -51,7 +51,6 @@ services:
       - prometheus
     restart: always
 
-
   # Publisher
   python_publisher:
     # Python-images kommer nu også fra GitHub
