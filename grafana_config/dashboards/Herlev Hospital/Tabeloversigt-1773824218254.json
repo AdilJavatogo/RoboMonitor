@@ -417,7 +417,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "robotfleet{hospital=\"OUH\", department=~\"$department\"}",
+          "expr": "robotfleet{hospital=\"Herlev Hospital\", department=~\"$department\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -554,6 +554,6 @@
   "timezone": "browser",
   "title": "Tabeloversigt",
   "uid": "adjp4g5",
-  "version": 1,
+  "version": 6,
   "weekStart": ""
 }
