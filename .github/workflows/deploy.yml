@@ -34,11 +34,8 @@ jobs:
             echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u adiljavatogo --password-stdin
             docker compose pull
             
-            # Vi aktiverer GitHub Secret'en som en miljøvariabel på serveren, 
-            # så docker compose kan læse den
             export GRAFANA_PASSWORD="${{ secrets.GRAFANA_PASSWORD }}"
             
-            # Starter systemet op (nu med den korrekte adgangskode i hukommelsen)
             docker compose up -d
             
             docker image prune -af
