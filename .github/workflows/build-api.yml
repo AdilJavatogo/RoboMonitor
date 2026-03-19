@@ -35,7 +35,6 @@ jobs:
           file: RoboMonitor/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          #provenance: false
 
       - name: Modtag event og opdater
         run: |
