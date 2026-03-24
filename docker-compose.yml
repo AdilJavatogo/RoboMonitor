@@ -24,6 +24,8 @@ services:
     user: root
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_SERVER_DOMAIN=robomonitor.duckdns.org
+      - GF_SERVER_ROOT_URL=https://robomonitor.duckdns.org/
     volumes:
       # Datasource provisioning, som fortæller Grafana hvor vores datasource YAML-fil ligger
       - ./grafana_config/grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
