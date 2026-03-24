@@ -1,0 +1,39 @@
+name: Build and Push Gateway
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - 'RoboMonitor.Gateway/**' # Byg kun hvis gateway koden ændres
+      - '.github/workflows/build-gateway.yml'
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: adiljavatogo/robomonitor-gateway
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: adiljavatogo
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: RoboMonitor.Gateway/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
