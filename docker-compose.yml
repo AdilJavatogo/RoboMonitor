@@ -54,8 +54,8 @@ services:
   python_subscriber:
     image: ghcr.io/adiljavatogo/scrabe-bot:latest
     environment:
-      # Vi bruger HTTP og port 80 internt for at undgå SSL-certifikatfejl
-      - ROBOMONITOR_API_URL=http://gateway:80/api/robotdata
+      # Vi bruger HTTP og port 80 internt for at undgå SSL-certifikatfejl   -http://gateway:80/api/robotdata
+      - ROBOMONITOR_API_URL=https://robomonitor.duckdns.org                  
       - ROBOT_API_KEY=herlev_ghi789 # subscriber node henter fra miljøvariabler
     depends_on:
       - gateway # fra api til gateway, da gateway håndterer autentificering og videresender til api
