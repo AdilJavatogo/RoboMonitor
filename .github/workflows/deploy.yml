@@ -1,8 +1,11 @@
 name: Deploy to Hetzner
 
 on:
+  push:
+    paths:
+      - 'docker-compose.yml'
   workflow_run:
-    workflows: ["Build and Push API"]
+    workflows: ["Build and Push API", "Build and Push Gateway"]
     types:
       - completed
   repository_dispatch:
