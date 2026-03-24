@@ -3,6 +3,9 @@ name: Build and Push API
 on:
   push:
     branches: [ "master" ] # husk også pull reuqest
+    paths:
+      - 'RoboMonitor/**'             # Byg kun hvis API-koden ændres
+      - '.github/workflows/build-api.yml'
     
   workflow_dispatch:
 
