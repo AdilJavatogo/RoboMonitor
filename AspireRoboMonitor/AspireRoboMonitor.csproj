@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RoboMonitor.Gateway\RoboMonitor.Gateway.csproj" />
     <ProjectReference Include="..\RoboMonitor.ServiceDefaults\RoboMonitor.ServiceDefaults.csproj" />
 	  <ProjectReference Include="..\RoboMonitor\RoboMonitor.csproj" />
   </ItemGroup>

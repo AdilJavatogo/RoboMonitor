@@ -22,6 +22,7 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="AspireRoboMonitor/AspireRoboMonitor.csproj" />
+  <Project Path="RoboMonitor.Gateway/RoboMonitor.Gateway.csproj" />
   <Project Path="RoboMonitor.ServiceDefaults/RoboMonitor.ServiceDefaults.csproj" />
   <Project Path="RoboMonitor/RoboMonitor.csproj" />
 </Solution>

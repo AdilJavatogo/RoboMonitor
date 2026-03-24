@@ -53,8 +53,27 @@ services:
   python_subscriber:
     image: ghcr.io/adiljavatogo/scrabe-bot:latest
     environment:
-      # api:8080
-      - ROBOMONITOR_API_URL=http://api:8080 
+      # http://api:8080
+      - ROBOMONITOR_API_URL=http://gateway:80
+      - ROBOT_API_KEY=herlev_ghi789 # subscriber node henter fra miljøvariabler
+    depends_on:
+      - gateway # fra api til gateway, da gateway håndterer autentificering og videresender til api
+    restart: always
+
+  gateway:
+    image: ghcr.io/adiljavatogo/robomonitor-gateway:latest
+    # environment:
+    #   # Dobbelt understregning (__) fortæller .NET, at den skal overskrive "Robot_Herlev_1" under "RobotApiKeys"
+    #   - RobotApiKeys__Robot_Herlev_1=${HERLEV_REAL_KEY}
+    #   - RobotApiKeys__Robot_OUH_1=${OUH_REAL_KEY}
+    environment:
+      # Tvinger .NET/Kestrel til at lytte på port 80 og 443 internt i containeren
+      - ASPNETCORE_URLS=http://0.0.0.0:80  # https://0.0.0.0:443
+    volumes:
+      - /etc/letsencrypt/:/etc/letsencrypt/
+    ports:
+      - "80:80"
+      - "443:443"
     depends_on:
       - api
     restart: always

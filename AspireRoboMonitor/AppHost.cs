@@ -15,7 +15,10 @@ var grafana = builder.AddContainer("grafana", "grafana/grafana")
        .WithBindMount("./grafana_config/grafana-datasource.yaml", "/etc/grafana/provisioning/datasources/datasource.yaml")
        .WithHttpEndpoint(port: 3000, targetPort: 3000)
        .WithExternalHttpEndpoints()
-       .WaitFor(prometheus); // Vent på Prometheus
+       .WaitFor(prometheus); // Vent pÃ¥ Prometheus
+
+
+builder.AddProject<Projects.RoboMonitor_Gateway>("robomonitor-gateway");
 
 
 builder.Build().Run();
