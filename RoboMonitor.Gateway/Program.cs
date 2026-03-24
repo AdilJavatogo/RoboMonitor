@@ -6,7 +6,7 @@ builder.Services.AddReverseProxy()
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 // API Middleware for at håndtere API-nøgle-godkendelse
 app.Use(async (context, next) =>
