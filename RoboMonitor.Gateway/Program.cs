@@ -11,8 +11,9 @@ var app = builder.Build();
 // API Middleware for at håndtere API-nøgle-godkendelse
 app.Use(async (context, next) =>
 {
-    // Vi kræver KUN api-nøgle, hvis man forsøger at ramme backend-API'et
-    if (context.Request.Path.StartsWithSegments("/api"))
+    // Gør tjekket mere specifikt, så det kun rammer din RobotData controller 
+    // og ignorerer Grafanas interne /api/ kald.
+    if (context.Request.Path.StartsWithSegments("/api/RobotData", StringComparison.OrdinalIgnoreCase))
     {
         // 1. Tjek om requesten har headeren "X-API-KEY"
         if (!context.Request.Headers.TryGetValue("X-API-KEY", out var extractedApiKey))
@@ -36,7 +37,7 @@ app.Use(async (context, next) =>
         }
     }
 
-    // Hvis det er Grafana (roden) eller en gyldig API-anmodning, send trafikken videre
+    // Hvis det er Grafana (roden, Grafana API) eller en gyldig robot API-anmodning, send trafikken videre
     await next();
 });
 
