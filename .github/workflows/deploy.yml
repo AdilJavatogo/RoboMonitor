@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'docker-compose.yml'
+      - '.github/workflows/deploy.yml'
   workflow_run:
     workflows: ["Build and Push API", "Build and Push Gateway"]
     types:
