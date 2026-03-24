@@ -11,35 +11,32 @@ app.UseHttpsRedirection();
 // API Middleware for at håndtere API-nøgle-godkendelse
 app.Use(async (context, next) =>
 {
-    // Tillad health checks at passere uden API-nøgle
-    if (context.Request.Path.StartsWithSegments("/health"))
+    // Vi kræver KUN api-nøgle, hvis man forsøger at ramme backend-API'et
+    if (context.Request.Path.StartsWithSegments("/api"))
     {
-        await next();
-        return;
+        // 1. Tjek om requesten har headeren "X-API-KEY"
+        if (!context.Request.Headers.TryGetValue("X-API-KEY", out var extractedApiKey))
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            await context.Response.WriteAsync("API Key mangler i headeren.");
+            return;
+        }
+
+        // 2. Hent gyldige nøgler
+        var validKeysSection = builder.Configuration.GetSection("RobotApiKeys").GetChildren();
+
+        // 3. Tjek om nøglen er gyldig
+        bool isKeyValid = validKeysSection.Any(k => k.Value == extractedApiKey.ToString());
+
+        if (!isKeyValid)
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            await context.Response.WriteAsync("Ugyldig API Key for denne robot.");
+            return;
+        }
     }
 
-    // 1. Tjek om requesten har headeren "X-API-KEY"
-    if (!context.Request.Headers.TryGetValue("X-API-KEY", out var extractedApiKey))
-    {
-        context.Response.StatusCode = 401; // Unauthorized
-        await context.Response.WriteAsync("API Key mangler.");
-        return;
-    }
-
-    // 2. Hent alle gyldige API-nøgler fra appsettings.json
-    var validKeysSection = builder.Configuration.GetSection("RobotApiKeys").GetChildren();
-
-    // 3. Tjek om den modtagne nøgle matcher en af værdierne i vores konfiguration
-    bool isKeyValid = validKeysSection.Any(k => k.Value == extractedApiKey.ToString());
-
-    if (!isKeyValid)
-    {
-        context.Response.StatusCode = 403; // Forbidden
-        await context.Response.WriteAsync("Ugyldig API Key.");
-        return;
-    }
-
-    // 4. Hvis nøglen er godkendt, sendes anmodningen videre til YARP og dit API
+    // Hvis det er Grafana (roden) eller en gyldig API-anmodning, send trafikken videre
     await next();
 });
 

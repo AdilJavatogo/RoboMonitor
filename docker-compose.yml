@@ -35,8 +35,8 @@ services:
       
       # Grafana data, så vi ikke mister vores dashboards og datasource konfiguration ved genstart
       - grafana_data:/var/lib/grafana
-    ports:
-      - "3030:3000"
+    # ports:
+    #   - "3030:3000"
     depends_on:
       - prometheus
     restart: always
