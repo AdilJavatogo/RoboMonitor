@@ -70,7 +70,7 @@ services:
     #   - RobotApiKeys__Robot_OUH_1=${OUH_REAL_KEY}
     environment:
       # Tvinger .NET/Kestrel til at lytte på port 80 og 443 internt i containeren
-      - ASPNETCORE_URLS=http://0.0.0.0:80;https://0.0.0.0:443
+      #- ASPNETCORE_URLS=http://0.0.0.0:80;https://0.0.0.0:443
     volumes:
       - /etc/letsencrypt/:/etc/letsencrypt/
     ports:
