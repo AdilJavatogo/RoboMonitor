@@ -41,7 +41,6 @@ app.Use(async (context, next) =>
     await next();
 });
 
-// Map YARP
 app.MapReverseProxy();
 
 app.Run();
