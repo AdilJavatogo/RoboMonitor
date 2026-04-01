@@ -36,7 +36,7 @@ namespace RoboMonitor.Metrics
                     }));
             });
 
-            // Fordi vi nu bruger rigtige enums, kan vi bare caste dem til (int)!
+            // Fordi vi nu bruger rigtige enums, kan vi bare caste dem til (int)
             _robotMeter.CreateObservableGauge("robot_status_code", () =>
                 _repository.GetAllRobots().Select(r => new Measurement<int>((int)r.RobotStatus, GetCommonTags(r))));
 

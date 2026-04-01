@@ -47,7 +47,7 @@ services:
   # Publisher
   python_publisher:
     # Python-images kommer nu også fra GitHub
-    image: ghcr.io/adiljavatogo/scrabe-bot:latest
+    image: ghcr.io/adiljavatogo/scrabe-bot:latest                                  
     # Vi overskriver standard-kommandoen til at starte pub i stedet for sub
     command: ["/bin/bash", "-c", "source install/setup.bash && ros2 run scrabe_bot_app scrabe_pub"]
     restart: always
