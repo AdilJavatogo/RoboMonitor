@@ -1,21 +1,14 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Tilføj YARP Reverse Proxy fra konfigurationen
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();
 
-//app.UseHttpsRedirection();
-
-// API Middleware for at håndtere API-nøgle-godkendelse
 app.Use(async (context, next) =>
 {
-    // Gør tjekket mere specifikt, så det kun rammer din RobotData controller 
-    // og ignorerer Grafanas interne /api/ kald.
     if (context.Request.Path.StartsWithSegments("/api/RobotData", StringComparison.OrdinalIgnoreCase))
     {
-        // 1. Tjek om requesten har headeren "X-API-KEY"
         if (!context.Request.Headers.TryGetValue("X-API-KEY", out var extractedApiKey))
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -23,10 +16,8 @@ app.Use(async (context, next) =>
             return;
         }
 
-        // 2. Hent gyldige nøgler
         var validKeysSection = builder.Configuration.GetSection("RobotApiKeys").GetChildren();
 
-        // 3. Tjek om nøglen er gyldig
         bool isKeyValid = validKeysSection.Any(k => k.Value == extractedApiKey.ToString());
 
         if (!isKeyValid)
@@ -37,7 +28,6 @@ app.Use(async (context, next) =>
         }
     }
 
-    // Hvis det er Grafana (roden, Grafana API) eller en gyldig robot API-anmodning, send trafikken videre
     await next();
 });
 

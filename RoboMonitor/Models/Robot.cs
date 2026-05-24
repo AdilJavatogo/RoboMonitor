@@ -4,7 +4,7 @@ namespace RoboMonitor.Models
 {
     public class Robot
     {
-        public int RobotId { get; set; }                // JSON property name: "id"............
+        public int RobotId { get; set; } 
 
         public string Hospital { get; set; } = string.Empty;
 

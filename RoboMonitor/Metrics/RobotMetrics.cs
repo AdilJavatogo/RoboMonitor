@@ -15,7 +15,6 @@ namespace RoboMonitor.Metrics
             _repository = repository;
             _robotMeter = meterFactory.Create("RoboMonitor.Robots");
 
-            // Opret målingerne som kigger på det Rigtige repository
             _robotMeter.CreateObservableGauge("robotfleet", () =>
             {
                 return _repository.GetAllRobots().Select(robot => new Measurement<int>(
@@ -36,7 +35,6 @@ namespace RoboMonitor.Metrics
                     }));
             });
 
-            // Fordi vi nu bruger rigtige enums, kan vi bare caste dem til (int)
             _robotMeter.CreateObservableGauge("robot_status_code", () =>
                 _repository.GetAllRobots().Select(r => new Measurement<int>((int)r.RobotStatus, GetCommonTags(r))));
 
@@ -46,11 +44,9 @@ namespace RoboMonitor.Metrics
             _robotMeter.CreateObservableGauge("robot_sensor_code", () =>
                 _repository.GetAllRobots().Select(r => new Measurement<int>((int)r.SensorStatus, GetCommonTags(r))));
 
-            // task
             _robotMeter.CreateObservableGauge("robot_task_code", () =>
                 _repository.GetAllRobots().Select(r => new Measurement<int>((int)r.RobotTask, GetCommonTags(r))));
 
-            // estop
             _robotMeter.CreateObservableGauge("robot_estop_code", () =>
                 _repository.GetAllRobots().Select(r => new Measurement<int>(r.EStop ? 1 : 0, GetCommonTags(r))));
         }
